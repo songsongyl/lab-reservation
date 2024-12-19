@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <el-row>
-      <el-col :span="4"
+      <el-col :span="10"
         ><el-input
           placeholder="请输入验证码"
           v-model="formLogin.code"
@@ -13,7 +13,7 @@
           <dentify :identifyCode="identifyCode"></dentify></div
       ></el-col>
     </el-row>
-    <div><el-button @click="submit">提交</el-button></div>
+    <!-- <div><el-button @click="submit">提交</el-button></div> -->
   </div>
 </template>
 

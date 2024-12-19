@@ -146,3 +146,15 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+#s-canvas {
+border-radius: 10px ;
+margin-left: 25px;
+padding-top: -15px;
+}
+.s-canvas{
+  text-align: center;
+  margin-bottom: 20px;
+}
+</style>
