@@ -20,8 +20,8 @@
 					<div class="bform">
 						<input type="text" placeholder="用户名" v-model="form.username">
 						<span class="errTips" v-if="existed">* 用户名已经存在！ *</span>
-					
 						<input type="password" placeholder="密码" v-model="form.userpwd">
+						<span class="errTips" v-if="!$v.password.required">密码不能为空</span>
                         <input type="password" placeholder="确认密码" v-model="form.userpwdre">
                          <input type="telephone" placeholder="手机号码" v-model="form.usertele">
 						<span class="errTips" v-if="teleError">* 手机号码填写错误 *</span>
@@ -50,9 +50,15 @@
 
 <script setup lang="ts">
 import Index from '../components/index.vue'
-import { ref } from 'vue'
-import $ from 'jquery'
-import 'jquery-validation'
+import { ref ,computed} from 'vue'
+import useVuelidate from "@vuelidate/core"
+import { numeric,minLength, maxLength, required, sameAs } from "@vuelidate/validators"
+import { regex } from 'vuelidate/lib/validators/common.js'
+
+
+// import $ from 'jquery'
+// import 'jquery-validation'
+var phone = regex('phoneNumber', /^1(3|4|5|7|8)\d{9}$/) // 手机号码校验
 var isLogin = ref(false)
 var teleError = ref(false)
 var passwordError = ref(false)
@@ -66,6 +72,32 @@ var form ={
     useraccount: '',
     userpwdre:''
 }
+const rules = computed(() => {
+  return {
+    // required: 必填项, maxLength: 最大长度不超过函数参数的值, email: 符合电子邮箱的格式
+  	// sameAs: 与某项必须一致（参数填formData里面的属性）
+    username: { required, maxLength: maxLength(6),minLength:minLength(2) },
+    password: {
+       required 
+		
+	  },
+	  account: {
+		  required,
+			maxLength: maxLength(10),minLength:minLength(10)
+	  },
+	  passwordre: {
+		  required,
+		sameAsPassword:sameAs('password')
+	  },
+	  telephone:{
+		  required,
+		  numeric,
+		  phone,
+		maxLength: maxLength(11),minLength:minLength(11)
+	}
+  };
+});
+var v$ = useVuelidate(rules, form);
 function changeType() {
 				isLogin.value = !isLogin.value
 				form.username = ''
@@ -74,9 +106,7 @@ function changeType() {
                  form.useraccount = ''
                  form.userpwdre = ''
 }
-function validate() {
-    $(".bform").validate({})
-}
+
 
 function login() {
 				const self = this;
