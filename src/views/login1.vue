@@ -5,16 +5,11 @@
                 <div class="big-contain" key="bigContainLogin" v-if="isLogin">
                     <div class="btitle">账户登录</div>
                     <div class="bform">
-                        <input type="text" placeholder="账号" v-model="form.useraccount"
-                            :class="{ 'input-error': v$.useraccount.$invalid && v$.useraccount.$dirty }">
-                        <span class="errTips" v-if="v$.useraccount.$invalid && v$.useraccount.$dirty">* 账号填写错误 *</span>
-                        <input type="password" placeholder="密码" v-model="form.userpwd"
-                            :class="{ 'input-error': v$.userpwd.$invalid && v$.userpwd.$dirty }">
-                        <span class="errTips" v-if="v$.userpwd.$invalid && v$.userpwd.$dirty">* 密码填写错误 *</span>
-                        <!-- <span class="errTips" v-if="!$v.user.password.required"></span> -->
+                        <input type="text" placeholder="账号" v-model="form.useraccount" >              
+                        <input type="password" placeholder="密码" v-model="form.userpwd"  >
                     </div>
                     <HomeView ref="homeView" @code-validated="handleValidation" />
-                    <button class="bbutton" @click="login">登录</button>
+                    <button class="bbutton" @click="loginF">登录</button>
                 </div>
                 <div class="big-contain" key="bigContainRegister" v-else>
                     <span class="lab-span">实验室预约系统</span>
@@ -48,110 +43,22 @@ import { regex } from 'vuelidate/lib/validators/common.js'
 import axios from 'axios'
 
 const homeView = ref(null); // 创建一个 ref 引用
-// import $ from 'jquery'
-// import 'jquery-validation'
-var phone = regex('telephone', /^1(3|4|5|7|8)\d{9}$/) // 手机号码校验
+
 var isLogin = ref(false)
-var teleError = ref(false)
-var passwordError = ref(false)
 var existed = ref(false)
-var accountError = ref(false)
-var passwordReError = ref(false)
 var form = reactive({
-    username: '',
     userpwd: '',
-    usertele: '',
-    useraccount: '',
-    userpwdre: ''
+    useraccount: ''
 })
-
-var rules = computed(() => {
-    return {
-        // required: 必填项, maxLength: 最大长度不超过函数参数的值, email: 符合电子邮箱的格式
-        // sameAs: 与某项必须一致（参数填formData里面的属性）
-        username: { required, maxLength: maxLength(6), minLength: minLength(2) },
-        userpwd: {
-            required,
-            maxLength: maxLength(16)
-        },
-        useraccount: {
-            required,
-            maxLength: maxLength(10), minLength: minLength(10)
-        },
-        userpwdre: {
-            required,
-            sameAsPassword: sameAs('userpwd')
-        },
-        usertele: {
-            required,
-            numeric,
-            phone
-        }
-    };
-});
-
-var v$ = useVuelidate(rules, form);
-
-const nameErrors = computed<Array<string>>(() => {
-    let errors: Array<string> = [];
-    if (v$.value.username.$errors.length) {
-        v$.value.username.$errors.forEach((error) => {
-            errors.push(error.$message as string);
-        })
-    }
-    return errors;
-})
-
 
 function changeType() {
     isLogin.value = !isLogin.value
-    form.username = ''
     form.userpwd = ''
-    form.usertele = ''
     form.useraccount = ''
-    form.userpwdre = ''
+ 
 }
 
 
-function login() {
-    // const self = this;
-    v$.value.$touch();  // 触发所有字段的校验
-    if (form.useraccount != "" && form.userpwd != "") {
-        axios({
-            method: 'post',
-            url: 'http://127.0.0.1:10520/api/user/login',
-            data: {
-                account: form.useraccount,
-                password: form.userpwd
-            }
-        })
-            .then(res => {
-                switch (res.data) {
-                    case 0:
-                        alert("登陆成功！");
-                        break;
-                    case -1:
-                        accountError.value = true;
-                        break;
-                    case 1:
-                        passwordError.value = true;
-                        break;
-                    default:
-                        alert("未知错误！");
-                        break;
-                }
-            })
-            .catch(err => {
-                console.log(err);
-                // alert("请求失败，请稍后再试！");
-            })
-    } else {
-        alert("填写不能为空！");
-    }
-
-    // 直接调用子组件的 validateCode 方法进行验证
-    homeView.value.validateCode();
-}
 function handleValidation(isValid) {
     if (isValid) {
         alert("验证码验证通过");
@@ -162,46 +69,24 @@ function handleValidation(isValid) {
         // 提示用户验证码错误
     }
 }
-function register() {
-    // const self = this;
-    v$.value.$touch();  // 触发所有字段的校验
-    // if (v$.value.userpwdre.$invalid) {
-    // 	alert("密码不一致错误");
-    // }
-    // alert(form.userpwd+ form.userpwdre);
-    if (form.username != "" && form.userpwd != "" && form.usertele != null && form.useraccount != null && form.userpwdre != null) {
-        axios({
-            method: 'post',
-            url: 'http://127.0.0.1:10520/api/user/add',
-            data: {
-                username: form.username,
-                password: form.userpwd,
-                telephone: form.usertele,
-                account: form.useraccount,
-                passwordre: form.userpwdre
+
+
+const loginF = async () => {
+    try {
+        const jsonString = JSON.stringify(form)
+        console.log(jsonString)
+        const response = await axios.post("http://localhost:8080/api/login", jsonString, {
+            headers: {
+                'Content-Type':'application/json'
             }
         })
-            .then(res => {
-                switch (res.data) {
-                    case 0:
-                        alert("注册成功！");
-                        login();
-                        break;
-                    case -1:
-                        existed.value = true;
-                        break;
-                }
-            })
-            .catch(err => {
-                console.log(err);
-                // alert("请求失败，请稍后再试！");
-            })
-    } else {
-        alert("填写不能为空！");
+        console.log("响应",response.data);
+        
+    } catch (error) {
+        console.error("发送数据时出错：",error)
     }
-
+    homeView.value.validateCode();
 }
-
 </script>
 
 <style scoped>
