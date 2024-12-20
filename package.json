@@ -12,7 +12,9 @@
     "@vuelidate/core": "^2.0.3",
     "@vuelidate/validators": "^2.0.4",
     "axios": "^1.7.9",
+    "body-parser": "^1.20.3",
     "element-plus": "^2.9.1",
+    "express": "^4.21.2",
     "jquery": "^3.7.1",
     "jquery-validation": "^1.21.0",
     "process": "^0.11.10",
@@ -26,5 +28,18 @@
     "@types/jquery": "^3.5.32",
     "@vitejs/plugin-vue": "^5.2.1",
     "vite": "^6.0.4"
-  }
+  },
+  "description": "This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.",
+  "main": "vite.config.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/songsongyl/lab-reservation.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/songsongyl/lab-reservation/issues"
+  },
+  "homepage": "https://github.com/songsongyl/lab-reservation#readme"
 }

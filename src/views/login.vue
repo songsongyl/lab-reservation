@@ -25,13 +25,15 @@
 						<!-- <span class="errTips" v-if="v$.username.$invalid && v$.username.$dirty">* 用户名已经存在！ *</span> -->
 						<input type="password" placeholder="密码" v-model="form.userpwd"
 							:class="{ 'input-error': v$.userpwd.$invalid && v$.userpwd.$dirty }">
-
+						<span class="errTips" v-if="v$.userpwd.$invalid && v$.userpwd.$dirty">
+							* 密码填写不能为空 *
+						</span>
 						<input type="password" placeholder="确认密码" v-model="form.userpwdre"
 							:class="{ 'input-error': v$.userpwdre.$invalid && v$.userpwdre.$dirty }">
 
-						<!-- <span class="errTips" v-if="v$.userpwdre.$invalid && v$.userpwdre.$dirty">
+						<span class="errTips" v-if="v$.userpwdre.$invalid && v$.userpwdre.$dirty">
 							* 两次密码不一致 *
-						</span> -->
+						</span>
 						<!--这里有问题 一致也弹出错误-->
 						<input type="tel" placeholder="手机号码" v-model="form.usertele"
 							:class="{ 'input-error': v$.usertele.$invalid && v$.usertele.$dirty }">
@@ -90,7 +92,8 @@ var rules = computed(() => {
 		// sameAs: 与某项必须一致（参数填formData里面的属性）
 		username: { required, maxLength: maxLength(6), minLength: minLength(2) },
 		userpwd: {
-			required
+			required,
+			maxLength: maxLength(16)
 		},
 		useraccount: {
 			required,
@@ -154,6 +157,9 @@ function login() {
 					case 1:
 						passwordError.value = true;
 						break;
+					default:
+						alert("未知错误！");
+						break;
 				}
 			})
 			.catch(err => {
@@ -184,7 +190,6 @@ function register() {
 	// 	alert("密码不一致错误");
 	// }
 	// alert(form.userpwd+ form.userpwdre);
-
 	if (form.username != "" && form.userpwd != "" && form.usertele != null && form.useraccount != null && form.userpwdre != null) {
 		axios({
 			method: 'post',
@@ -215,6 +220,7 @@ function register() {
 	} else {
 		alert("填写不能为空！");
 	}
+	
 }
 
 </script>

@@ -36,7 +36,7 @@ router.post("/login", (req, res) => {
 router.post("/add", (req, res) => {
   const params = req.body;
   const sel_sql =
-    $sql.user.select + " where username = '" + params.username + "'";
+    $sql.user.select + " where name = '" + params.username + "'";
   const add_sql = $sql.user.add;
   console.log(sel_sql);
 
@@ -46,12 +46,12 @@ router.post("/add", (req, res) => {
       // can send error to frontend
       // or send 500 status code
     }
-    if (results.length != 0 && params.username == results[0].username) {
+    if (results.length != 0 && params.username == results[0].name) {
       res.send("-1"); // -1 表示用户名已经存在
     } else {
       conn.query(
         add_sql,
-        [params.username, params.email, params.password],
+        [params.username, params.account, params.password],
         (err, rst) => {
           if (err) {
             console.log(err);
