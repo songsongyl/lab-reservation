@@ -180,10 +180,10 @@ function handleValidation(isValid) {
 function register() {
 	// const self = this;
 	v$.value.$touch();  // 触发所有字段的校验
-	if (v$.value.userpwdre.$invalid) {
-		alert("密码不一致错误");
-	}
-	alert(form.userpwd+ form.userpwdre);
+	// if (v$.value.userpwdre.$invalid) {
+	// 	alert("密码不一致错误");
+	// }
+	// alert(form.userpwd+ form.userpwdre);
 
 	if (form.username != "" && form.userpwd != "" && form.usertele != null && form.useraccount != null && form.userpwdre != null) {
 		axios({
