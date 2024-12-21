@@ -37,9 +37,7 @@
 <script setup lang="ts">
 import HomeView from '../components/HomeView.vue'
 import { ref, computed, reactive } from 'vue'
-import useVuelidate from "@vuelidate/core"
-import { numeric, minLength, maxLength, required, sameAs } from "@vuelidate/validators"
-import { regex } from 'vuelidate/lib/validators/common.js'
+import { useRouter } from 'vue-router'
 import axios from 'axios'
 
 const homeView = ref(null); // 创建一个 ref 引用
@@ -70,11 +68,12 @@ function handleValidation(isValid) {
     }
 }
 
-
+//
+// http://10.181.9.75:8080/swagger-ui/swagger-ui/index.html#/login-controller/login
 const loginF = async () => {
     try {
         const jsonString = JSON.stringify(form)
-        console.log(jsonString)
+        // console.log(jsonString)
         const response = await axios.post("http://localhost:8080/api/login", jsonString, {
             headers: {
                 'Content-Type':'application/json'
@@ -86,6 +85,10 @@ const loginF = async () => {
         console.error("发送数据时出错：",error)
     }
     homeView.value.validateCode();
+   
+    const router = useRouter();
+    router.push("/index");  // 也可以使用路径: router.push('/home')
+
 }
 </script>
 
