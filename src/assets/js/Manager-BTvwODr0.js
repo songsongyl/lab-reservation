@@ -5,8 +5,8 @@
 /* empty css                */
 /* empty css                  */
 import { _ as S, r as q, c as w, a as n, b as t, w as e, d as a, e as m, u as c, f as p, E as j, g as U, h as H, i as T, o as i, t as A, j as u, p as $, k as L, l as F, m as G, n as J, q as x, s as O, v as P, x as W, y as X } from "./index-HHlgu3jn.js";
-const K = "../images/高校实验室设备管理系统_files/logo.png"
-    , Q = "/assets/avatar-uscRzRXF.png"
+const K = "../images/高校实验室设备管理系统_files/logo-DHGvBcNW.png"
+    , Q = "../images/高校实验室设备管理系统_files/avatar.png"
     , r = f => ($("data-v-02677b06"),
         f = f(),
         L(),

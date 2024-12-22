@@ -43,3 +43,7 @@ const router = createRouter({
 })
 
 export default router
+
+// 教师账号： aaa 密码：123
+// 实验室管理员账号：mxt 密码：123
+// 超级管理员账号：admin 密码：admin

@@ -3,7 +3,7 @@
         <div data-v-02677b06="" class="manager-container">
             <div data-v-02677b06="" class="manager-header">
                 <div data-v-02677b06="" class="manager-header-left"><img data-v-02677b06=""
-                        src="../assets/images/高校实验室设备管理系统_files/logo.png" >
+                        src="../assets/images/高校实验室设备管理系统_files/avatar.png">
                     <div data-v-02677b06="" class="title" style="font-size: 16px;">实验室设备管理系统</div>
                 </div>
                 <div data-v-02677b06="" class="manager-header-center">
@@ -22,7 +22,7 @@
                             aria-haspopup="menu" style="padding-right: 20px; display: flex; align-items: center;">
                             <img data-v-02677b06="" src="../assets/images/高校实验室设备管理系统_files/avatar.png" alt=""
                                 style="margin-left: 700px; width: 40px; height: 40px; display: block; border-radius: 50%;"><span
-                                data-v-02677b06="" style="margin-left: 5px;">超级管理员</span>
+                                data-v-02677b06="" style="margin-left: 5px;">个人中心</span>
                         </div><!--v-if-->
                     </div>
                 </div>
@@ -87,22 +87,23 @@
                         </li>
                     </ul><!----><!---->
                 </div>
-                <div data-v-02677b06="" class="manager-main-right">
-                    <div data-v-02677b06="">
-                        <div style="margin-top: 2px;">
-                           <Card/>
-                        </div>
-                        <div style="display: flex; gap: 10px; margin: 10px 0px;">
-                            <div class="card" id="equipmentBar" _echarts_instance_="ec_1734750771386"
-                                style="width: 100%; height: 400px; text-align: center; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;">
-                                <div
-                                    style="position: relative; width: 1152px; height: 380px; padding: 0px; margin: 0px; border-width: 0px; cursor: default;">
-                                    <canvas data-zr-dom-id="zr_0" width="2304" height="760"
-                                        style="position: absolute; left: 0px; top: 0px; width: 1152px; height: 380px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); padding: 0px; margin: 0px; border-width: 0px;"></canvas>
+              
+                    <div data-v-02677b06="" class="manager-main-right">
+                        <div data-v-02677b06="">
+                            <div style="margin-top: 2px;">
+                                <Card />
+                            </div>
+                            <div style="display: flex; gap: 10px; margin: 10px 0px;">
+                                <div class="card" id="equipmentBar" _echarts_instance_="ec_1734750771386"
+                                    style="width: 100%; height: 400px; text-align: center; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;">
+                                    <div
+                                        style="position: relative; width: 1152px; height: 380px; padding: 0px; margin: 0px; border-width: 0px; cursor: default;">
+                                        <canvas data-zr-dom-id="zr_0" width="2304" height="760"
+                                            style="position: absolute; left: 0px; top: 0px; width: 1152px; height: 380px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); padding: 0px; margin: 0px; border-width: 0px;"></canvas>
 
-                                </div>
+                                    </div>
 
-                                <div style="position: absolute; display: block; border-style: solid; white-space: nowrap;
+                                    <div style="position: absolute; display: block; border-style: solid; white-space: nowrap;
                                          z-index: 9999999; box-shadow: rgba(0, 0, 0, 0.2) 1px 2px 10px; 
                                          transition: opacity 0.2s cubic-bezier(0.23, 1, 0.32, 1) 0s, visibility 0.2s cubic-bezier(0.23, 1, 0.32, 1) 0s, transform 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0s;
                                           background-color: rgb(255, 255, 255); border-width: 1px; 
@@ -111,16 +112,18 @@
                                           transform: translate3d(441px, 231px, 0px); 
                                           border-color: rgb(255, 255, 255); 
                                           pointer-events: none; visibility: hidden; opacity: 0;">
-                                    <div style="margin: 0px 0 0;line-height:1;">
                                         <div style="margin: 0px 0 0;line-height:1;">
-                                            <div style="font-size:14px;color:#666;font-weight:400;line-height:1;">
-                                                生物实验室01</div>
-                                            <div style="margin: 10px 0 0;line-height:1;">
-                                                <div style="margin: 0px 0 0;line-height:1;">
-                                                    <div style="margin: 0px 0 0;line-height:1;"><span
-                                                            style="display:inline-block;margin-right:4px;border-radius:10px;width:10px;height:10px;background-color:#5470c6;"></span><span
-                                                            style="font-size:14px;color:#666;font-weight:400;margin-left:2px">空闲中</span><span
-                                                            style="float:right;margin-left:20px;font-size:14px;color:#666;font-weight:900">5</span>
+                                            <div style="margin: 0px 0 0;line-height:1;">
+                                                <div style="font-size:14px;color:#666;font-weight:400;line-height:1;">
+                                                    生物实验室01</div>
+                                                <div style="margin: 10px 0 0;line-height:1;">
+                                                    <div style="margin: 0px 0 0;line-height:1;">
+                                                        <div style="margin: 0px 0 0;line-height:1;"><span
+                                                                style="display:inline-block;margin-right:4px;border-radius:10px;width:10px;height:10px;background-color:#5470c6;"></span><span
+                                                                style="font-size:14px;color:#666;font-weight:400;margin-left:2px">空闲中</span><span
+                                                                style="float:right;margin-left:20px;font-size:14px;color:#666;font-weight:900">5</span>
+                                                            <div style="clear:both"></div>
+                                                        </div>
                                                         <div style="clear:both"></div>
                                                     </div>
                                                     <div style="clear:both"></div>
@@ -129,14 +132,13 @@
                                             </div>
                                             <div style="clear:both"></div>
                                         </div>
-                                        <div style="clear:both"></div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
+                        </div>
                     </div>
-                </div>
+             
             </div>
             <div class=" el-overlay" style="z-index: 2025; display: none;">
                 <div role="dialog" aria-modal="true" aria-label="重要说明" aria-describedby="el-id-4707-17"
@@ -1597,7 +1599,7 @@
 
 <script setup lang="ts">
 
-import VueDrawingCanvas from "vue-drawing-canvas";
+// import VueDrawingCanvas from "vue-drawing-canvas";
 // main.js 或 Vue 组件中的 script 部分
 import '../assets/js/index-HHlgu3jn.js';
 import '../assets/js/Manager-BTvwODr0.js';
@@ -13880,7 +13882,8 @@ body,
 #app {
     height: 100%;
     margin: 0;
-    padding: 0
+    padding: 0;
+    /* width :1400px */
 }
 
 .dark-scrollbar::-webkit-scrollbar-thumb {
