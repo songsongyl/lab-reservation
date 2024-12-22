@@ -12,7 +12,7 @@
             </div>
             <div class="card" style="flex: 1 1 0%; display: flex; align-items: center; height: 120px;">
                 <div style="flex: 1 1 0%; text-align: center;"><img
-                        src="../assets/images/高校实验室设备管理系统_files/使用中-BKWQrt1n.png" style="width: 70px; height: 70px;">
+                        src="../assets/images/高校实验室设备管理系统_files/BKWQrt1n.png" style="width: 70px; height: 70px;">
                 </div>
                 <div style="flex: 1 1 0%;">
                     <div style="margin-left: 25px;  width: 100px;  font-size: 20px; margin-bottom: 10px;">使用中设备</div>

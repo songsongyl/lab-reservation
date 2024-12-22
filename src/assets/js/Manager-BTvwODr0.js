@@ -5,7 +5,7 @@
 /* empty css                */
 /* empty css                  */
 import { _ as S, r as q, c as w, a as n, b as t, w as e, d as a, e as m, u as c, f as p, E as j, g as U, h as H, i as T, o as i, t as A, j as u, p as $, k as L, l as F, m as G, n as J, q as x, s as O, v as P, x as W, y as X } from "./index-HHlgu3jn.js";
-const K = "/assets/logo-DHGvBcNW.png"
+const K = "../images/高校实验室设备管理系统_files/logo.png"
     , Q = "/assets/avatar-uscRzRXF.png"
     , r = f => ($("data-v-02677b06"),
         f = f(),
@@ -37,7 +37,7 @@ const K = "/assets/logo-DHGvBcNW.png"
         },
         target: "_blank",
         href: "https://www.javaxmsz.cn/projectDetail?id=67"
-    }, "https://javaxmsz.cn", -1))
+    }, "", -1))
     , ne = {
         class: "manager-header-right"
     }
@@ -83,14 +83,7 @@ const K = "/assets/logo-DHGvBcNW.png"
     , he = {
         class: "manager-main-right"
     }
-    , xe = r(() => n("div", null, [n("div", {
-        style: {
-            "font-size": "16px",
-            "font-weight": "bold",
-            color: "red",
-            "text-align": "center"
-        }
-    }, " 本原创项目提供：项目脚手架 + 从0带做 视频 +笔记 + 源码 "), n("div", {
+    , xe = r(() => n("div", null, [(" 欢迎来到实验室预约管理系统 "), n("div", {
         style: {
             "font-size": "15px",
             "font-weight": "bold",
@@ -98,15 +91,7 @@ const K = "/assets/logo-DHGvBcNW.png"
             margin: "20px 0",
             "text-align": "center"
         }
-    }, " 提供远程一对一安装部署服务、远程BUG解决服务 "), n("div", {
-        style: {
-            "font-size": "15px",
-            "font-weight": "bold",
-            color: "#000",
-            margin: "20px 0",
-            "text-align": "center"
-        }
-    }, [a(" 获取链接："), n("a", {
+    }[a(" 获取链接："), n("a", {
         target: "_blank",
         style: {
             color: "#2a60c9"
@@ -169,9 +154,10 @@ const K = "/assets/logo-DHGvBcNW.png"
                             "font-size": "20px"
                         },
                         onClick: s[0] || (s[0] = d => l.fromVisible = !0)
-                    }, [a("注意：本项目提供 从0带做视频 + 完整笔记 + 完整源码，更多原创项目请访问： "), ae])]), n("div", ne, [t(V, {
+                    }, [a(""), ae])]), n("div", ne, [t(V, {
                         style: {
-                            cursor: "pointer"
+                            cursor: "pointer",
+                            "margin-left": "500px"
                         }
                     }, {
                         dropdown: e(() => [t(M, null, {
@@ -400,7 +386,7 @@ const K = "/assets/logo-DHGvBcNW.png"
                                 }, 8, ["default-active"])) : p("", !0)]), n("div", he, [t(C, {
                                     onUpdateUser: D
                                 })])]), t(z, {
-                                    title: "重要说明",
+                                    // title: "重要说明",
                                     modelValue: l.fromVisible,
                                     "onUpdate:modelValue": s[5] || (s[5] = d => l.fromVisible = d),
                                     width: "40%",
