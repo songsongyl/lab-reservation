@@ -61,7 +61,7 @@ const g = r => (z("data-v-73923791"),
                         s && R.post("/login", t.form).then(e => {
                             e.code === "200" ? (c.success("登录成功"),
                                 localStorage.setItem("xm-user", JSON.stringify(e.data)),
-                                e.data.role === "ADMIN" ? f.push("/manager/DataAnalysis") : (e.data.role === "TEACHER" || e.data.role === "LABADMIN") && f.push("/manager/teacherNotice")) : c.error(e.msg)
+                                e.data.role === "ADMIN" ? f.push("/home") : (e.data.role === "TEACHER" || e.data.role === "LABADMIN") && f.push("/manager/teacherNotice")) : c.error(e.msg)
                         }
                         )
                     }

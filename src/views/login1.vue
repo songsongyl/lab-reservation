@@ -5,8 +5,8 @@
                 <div class="big-contain" key="bigContainLogin" v-if="isLogin">
                     <div class="btitle">账户登录</div>
                     <div class="bform">
-                        <input type="text" placeholder="账号" v-model="form.useraccount" >              
-                        <input type="password" placeholder="密码" v-model="form.userpwd"  >
+                        <input type="text" placeholder="账号" v-model="form.account" >              
+                        <input type="password" placeholder="密码" v-model="form.password"  >
                     </div>
                     <HomeView ref="homeView" @code-validated="handleValidation" />
                     <button class="bbutton" @click="loginF">登录</button>
@@ -41,18 +41,18 @@ import { useRouter } from 'vue-router'
 import axios from 'axios'
 
 const homeView = ref(null); // 创建一个 ref 引用
-
+const router = useRouter();
 var isLogin = ref(false)
 var existed = ref(false)
 var form = reactive({
-    userpwd: '',
-    useraccount: ''
+    password: '',
+    account: ''
 })
 
 function changeType() {
     isLogin.value = !isLogin.value
-    form.userpwd = ''
-    form.useraccount = ''
+    form.password = ''
+    form.account = ''
  
 }
 
@@ -72,22 +72,32 @@ function handleValidation(isValid) {
 // http://10.181.9.75:8080/swagger-ui/swagger-ui/index.html#/login-controller/login
 const loginF = async () => {
     try {
-        const jsonString = JSON.stringify(form)
+        // const jsonString = JSON.stringify(form)
         // console.log(jsonString)
-        const response = await axios.post("http://localhost:8080/api/login", jsonString, {
+        const response = await axios.post("http://localhost:8080/api/login", form, {
             headers: {
                 'Content-Type':'application/json'
             }
         })
         console.log("响应",response.data);
-        
+        homeView.value.validateCode();
+
+      
+        router.push("/home");  
     } catch (error) {
-        console.error("发送数据时出错：",error)
+        if (error.response) {
+            // 请求已发送，但服务器响应了状态码
+            console.error("响应错误:", error.response.data);
+        } else if (error.request) {
+            // 请求已发送，但没有收到响应
+            console.error("没有收到响应:", error.request);
+        } else {
+            // 发生错误时的设置
+            console.error("请求错误:", error.message);
+        }
     }
-    homeView.value.validateCode();
-   
-    const router = useRouter();
-    router.push("/index");  // 也可以使用路径: router.push('/home')
+
+    
 
 }
 </script>

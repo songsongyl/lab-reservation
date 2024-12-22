@@ -1,6 +1,6 @@
 <template>
   <div >
-messageManage
+apply
   </div>
 </template>
 

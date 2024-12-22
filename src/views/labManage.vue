@@ -536,7 +536,7 @@
 </template>
 
 <script setup lang="ts">
-import '../assets/js/index-HHlgu3jn.js'
+import '../assets/js/Lab-BKNcsvGo.js'
 </script>
 <style scoped>
 * {

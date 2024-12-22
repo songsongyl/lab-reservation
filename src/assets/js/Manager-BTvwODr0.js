@@ -214,7 +214,7 @@ const K = "../images/高校实验室设备管理系统_files/logo-DHGvBcNW.png"
                             router: ""
                         }, {
                             default: e(() => [t(o, {
-                                index: "/manager/DataAnalysis"
+                                index: "/home"
                             }, {
                                 default: e(() => [t(_, null, {
                                     default: e(() => [t(v)]),

@@ -87,23 +87,23 @@
                         </li>
                     </ul><!----><!---->
                 </div>
-              
-                    <div data-v-02677b06="" class="manager-main-right">
-                        <div data-v-02677b06="">
-                            <div style="margin-top: 2px;">
-                                <Card />
-                            </div>
-                            <div style="display: flex; gap: 10px; margin: 10px 0px;">
-                                <div class="card" id="equipmentBar" _echarts_instance_="ec_1734750771386"
-                                    style="width: 100%; height: 400px; text-align: center; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;">
-                                    <div
-                                        style="position: relative; width: 1152px; height: 380px; padding: 0px; margin: 0px; border-width: 0px; cursor: default;">
-                                        <canvas data-zr-dom-id="zr_0" width="2304" height="760"
-                                            style="position: absolute; left: 0px; top: 0px; width: 1152px; height: 380px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); padding: 0px; margin: 0px; border-width: 0px;"></canvas>
 
-                                    </div>
+                <div data-v-02677b06="" class="manager-main-right">
+                    <div data-v-02677b06="">
+                        <div style="margin-top: 2px;">
+                            <Card />
+                        </div>
+                        <div style="display: flex; gap: 10px; margin: 10px 0px;">
+                            <div class="card" id="equipmentBar" _echarts_instance_="ec_1734750771386"
+                                style="width: 100%; height: 400px; text-align: center; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;">
+                                <div
+                                    style="position: relative; width: 1152px; height: 380px; padding: 0px; margin: 0px; border-width: 0px; cursor: default;">
+                                    <canvas data-zr-dom-id="zr_0" width="2304" height="760"
+                                        style="position: absolute; left: 0px; top: 0px; width: 1152px; height: 380px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); padding: 0px; margin: 0px; border-width: 0px;"></canvas>
 
-                                    <div style="position: absolute; display: block; border-style: solid; white-space: nowrap;
+                                </div>
+
+                                <div style="position: absolute; display: block; border-style: solid; white-space: nowrap;
                                          z-index: 9999999; box-shadow: rgba(0, 0, 0, 0.2) 1px 2px 10px; 
                                          transition: opacity 0.2s cubic-bezier(0.23, 1, 0.32, 1) 0s, visibility 0.2s cubic-bezier(0.23, 1, 0.32, 1) 0s, transform 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0s;
                                           background-color: rgb(255, 255, 255); border-width: 1px; 
@@ -112,18 +112,16 @@
                                           transform: translate3d(441px, 231px, 0px); 
                                           border-color: rgb(255, 255, 255); 
                                           pointer-events: none; visibility: hidden; opacity: 0;">
+                                    <div style="margin: 0px 0 0;line-height:1;">
                                         <div style="margin: 0px 0 0;line-height:1;">
-                                            <div style="margin: 0px 0 0;line-height:1;">
-                                                <div style="font-size:14px;color:#666;font-weight:400;line-height:1;">
-                                                    生物实验室01</div>
-                                                <div style="margin: 10px 0 0;line-height:1;">
-                                                    <div style="margin: 0px 0 0;line-height:1;">
-                                                        <div style="margin: 0px 0 0;line-height:1;"><span
-                                                                style="display:inline-block;margin-right:4px;border-radius:10px;width:10px;height:10px;background-color:#5470c6;"></span><span
-                                                                style="font-size:14px;color:#666;font-weight:400;margin-left:2px">空闲中</span><span
-                                                                style="float:right;margin-left:20px;font-size:14px;color:#666;font-weight:900">5</span>
-                                                            <div style="clear:both"></div>
-                                                        </div>
+                                            <div style="font-size:14px;color:#666;font-weight:400;line-height:1;">
+                                                生物实验室01</div>
+                                            <div style="margin: 10px 0 0;line-height:1;">
+                                                <div style="margin: 0px 0 0;line-height:1;">
+                                                    <div style="margin: 0px 0 0;line-height:1;"><span
+                                                            style="display:inline-block;margin-right:4px;border-radius:10px;width:10px;height:10px;background-color:#5470c6;"></span><span
+                                                            style="font-size:14px;color:#666;font-weight:400;margin-left:2px">空闲中</span><span
+                                                            style="float:right;margin-left:20px;font-size:14px;color:#666;font-weight:900">5</span>
                                                         <div style="clear:both"></div>
                                                     </div>
                                                     <div style="clear:both"></div>
@@ -132,13 +130,15 @@
                                             </div>
                                             <div style="clear:both"></div>
                                         </div>
+                                        <div style="clear:both"></div>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
+
                     </div>
-             
+                </div>
+
             </div>
             <div class=" el-overlay" style="z-index: 2025; display: none;">
                 <div role="dialog" aria-modal="true" aria-label="重要说明" aria-describedby="el-id-4707-17"
@@ -311,9 +311,9 @@
                                                             xlink:href="#icon-screenshot-download-icon">
                                                         </use>
                                                     </svg></div>
-                                            </div><img data-v-fd28ae19=""
+                                            </div> <!-- <img data-v-fd28ae19=""
                                                 src="http://49.234.52.28:89/manager/DataAnalysis"
-                                                style="width: 100%; height: 100%;"><!---->
+                                                style="width: 100%; height: 100%;"> -->
                                         </div>
                                         <div data-v-fd28ae19="" class="screenshot-target"><!----><!---->
                                             <div data-v-fd28ae19="" class="load-tip flex-center column center">

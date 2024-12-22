@@ -1,13 +1,17 @@
 import { createRouter, createWebHashHistory, type RouteRecordRaw } from 'vue-router'
 
 const routes: RouteRecordRaw[] = [
-  //   {
-  //     path: '/',
-  //     component: () => import('../views/login1.vue')
-  // },
+    {
+      path: '/',
+      component: () => import('../views/login1.vue')
+  },
   {
-    path: '/',
-    component: () => import('../views/index.vue')
+    path: '/home',
+    component: () => import('../views/home.vue')
+  },
+  {
+    path: '/graph',
+    component: () => import('../views/graph.vue')
   },
   {
     path: '/messageManage',
@@ -20,21 +24,27 @@ const routes: RouteRecordRaw[] = [
       {
         path: 'equipmentManage',
         component: () => import('../views/equipmentManage.vue')
-      },
-      {
-        path: 'noticeManage',
-        component: () => import('../views/noticeManage.vue')
       }
+      
     ]
+  },
+  {
+    path: '/noticeManage',
+    component: () => import('../views/noticeManage.vue')
+  },
+  {
+    path: '/timetable',
+    component: () => import('../views/timetable.vue')
+  },
+
+  {
+    path: '/appointment',
+    component: () => import('../views/appointment.vue')
+  },
+  {
+    path: '/appointmentApply',
+    component: () => import('../views/appointmentApply.vue')
   }
-  // {
-  //   path: '/',
-  //   component: () => import('../views/labManage.vue')
-  // }
-  // {
-  //   path: '/',
-  //   component: () => import('../views/equipmentManage.vue')
-  // }
  
 ]
 const router = createRouter({

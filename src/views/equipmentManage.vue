@@ -21,13 +21,14 @@
                             <!--v-if-->
                             <div class="el-select__selection"><!--v-if-->
                                 <div class="el-select__selected-item el-select__input-wrapper is-hidden"><input
-                                        type="text" class="el-select__input" autocomplete="off" role="combobox"
-                                        readonly spellcheck="false" aria-activedescendant=""
-                                        aria-controls="el-id-2142-289" aria-expanded="false" aria-autocomplete="none"
-                                        aria-haspopup="listbox" id="el-id-2142-298" style="width: 11px;"><!--v-if-->
+                                        type="text" class="el-select__input" autocomplete="off" role="combobox" readonly
+                                        spellcheck="false" aria-activedescendant="" aria-controls="el-id-2142-289"
+                                        aria-expanded="false" aria-autocomplete="none" aria-haspopup="listbox"
+                                        id="el-id-2142-298" style="width: 11px;"><!--v-if-->
                                 </div>
                                 <div class="el-select__selected-item el-select__placeholder is-transparent">
-                                    <span>请选择所属学院</span></div>
+                                    <span>请选择所属学院</span>
+                                </div>
                             </div>
                             <div class="el-select__suffix"><i class="el-icon el-select__caret el-select__icon"><svg
                                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
@@ -42,13 +43,14 @@
                             <!--v-if-->
                             <div class="el-select__selection"><!--v-if-->
                                 <div class="el-select__selected-item el-select__input-wrapper is-hidden"><input
-                                        type="text" class="el-select__input" autocomplete="off" role="combobox"
-                                        readonly spellcheck="false" aria-activedescendant=""
-                                        aria-controls="el-id-2142-291" aria-expanded="false" aria-autocomplete="none"
-                                        aria-haspopup="listbox" id="el-id-2142-299" style="width: 11px;"><!--v-if-->
+                                        type="text" class="el-select__input" autocomplete="off" role="combobox" readonly
+                                        spellcheck="false" aria-activedescendant="" aria-controls="el-id-2142-291"
+                                        aria-expanded="false" aria-autocomplete="none" aria-haspopup="listbox"
+                                        id="el-id-2142-299" style="width: 11px;"><!--v-if-->
                                 </div>
                                 <div class="el-select__selected-item el-select__placeholder is-transparent">
-                                    <span>请选择设备状态</span></div>
+                                    <span>请选择设备状态</span>
+                                </div>
                             </div>
                             <div class="el-select__suffix"><i class="el-icon el-select__caret el-select__icon"><svg
                                         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
@@ -236,7 +238,8 @@
                                                         <td class="el-table_8_column_79 el-table__cell" rowspan="1"
                                                             colspan="1">
                                                             <div class="cell el-tooltip" style="width: 78px;">
-                                                                <!---->上海物理仪器生产有限公司</div>
+                                                                <!---->上海物理仪器生产有限公司
+                                                            </div>
                                                         </td>
                                                         <td class="el-table_8_column_80 el-table__cell" rowspan="1"
                                                             colspan="1">
@@ -314,7 +317,8 @@
                                                         <td class="el-table_8_column_79 el-table__cell" rowspan="1"
                                                             colspan="1">
                                                             <div class="cell el-tooltip" style="width: 78px;">
-                                                                <!---->上海生物仪器生产有限公司</div>
+                                                                <!---->上海生物仪器生产有限公司
+                                                            </div>
                                                         </td>
                                                         <td class="el-table_8_column_80 el-table__cell" rowspan="1"
                                                             colspan="1">
@@ -392,7 +396,8 @@
                                                         <td class="el-table_8_column_79 el-table__cell" rowspan="1"
                                                             colspan="1">
                                                             <div class="cell el-tooltip" style="width: 78px;">
-                                                                <!---->上海物理仪器生产有限公司</div>
+                                                                <!---->上海物理仪器生产有限公司
+                                                            </div>
                                                         </td>
                                                         <td class="el-table_8_column_80 el-table__cell" rowspan="1"
                                                             colspan="1">
@@ -470,7 +475,8 @@
                                                         <td class="el-table_8_column_79 el-table__cell" rowspan="1"
                                                             colspan="1">
                                                             <div class="cell el-tooltip" style="width: 78px;">
-                                                                <!---->上海物理仪器生产有限公司</div>
+                                                                <!---->上海物理仪器生产有限公司
+                                                            </div>
                                                         </td>
                                                         <td class="el-table_8_column_80 el-table__cell" rowspan="1"
                                                             colspan="1">
@@ -548,7 +554,8 @@
                                                         <td class="el-table_8_column_79 el-table__cell" rowspan="1"
                                                             colspan="1">
                                                             <div class="cell el-tooltip" style="width: 78px;">
-                                                                <!---->上海华为电脑生产有限公司</div>
+                                                                <!---->上海华为电脑生产有限公司
+                                                            </div>
                                                         </td>
                                                         <td class="el-table_8_column_80 el-table__cell" rowspan="1"
                                                             colspan="1">
@@ -626,7 +633,8 @@
                                                         <td class="el-table_8_column_79 el-table__cell" rowspan="1"
                                                             colspan="1">
                                                             <div class="cell el-tooltip" style="width: 78px;">
-                                                                <!---->上海物理仪器生产有限公司</div>
+                                                                <!---->上海物理仪器生产有限公司
+                                                            </div>
                                                         </td>
                                                         <td class="el-table_8_column_80 el-table__cell" rowspan="1"
                                                             colspan="1">
@@ -704,7 +712,8 @@
                                                         <td class="el-table_8_column_79 el-table__cell" rowspan="1"
                                                             colspan="1">
                                                             <div class="cell el-tooltip" style="width: 78px;">
-                                                                <!---->上海交换机生产有限公司</div>
+                                                                <!---->上海交换机生产有限公司
+                                                            </div>
                                                         </td>
                                                         <td class="el-table_8_column_80 el-table__cell" rowspan="1"
                                                             colspan="1">
@@ -782,7 +791,8 @@
                                                         <td class="el-table_8_column_79 el-table__cell" rowspan="1"
                                                             colspan="1">
                                                             <div class="cell el-tooltip" style="width: 78px;">
-                                                                <!---->上海交换机生产有限公司</div>
+                                                                <!---->上海交换机生产有限公司
+                                                            </div>
                                                         </td>
                                                         <td class="el-table_8_column_80 el-table__cell" rowspan="1"
                                                             colspan="1">
@@ -860,7 +870,8 @@
                                                         <td class="el-table_8_column_79 el-table__cell" rowspan="1"
                                                             colspan="1">
                                                             <div class="cell el-tooltip" style="width: 78px;">
-                                                                <!---->上海交换机生产有限公司</div>
+                                                                <!---->上海交换机生产有限公司
+                                                            </div>
                                                         </td>
                                                         <td class="el-table_8_column_80 el-table__cell" rowspan="1"
                                                             colspan="1">
@@ -938,7 +949,8 @@
                                                         <td class="el-table_8_column_79 el-table__cell" rowspan="1"
                                                             colspan="1">
                                                             <div class="cell el-tooltip" style="width: 78px;">
-                                                                <!---->芜湖3D打印机生产有限公司</div>
+                                                                <!---->芜湖3D打印机生产有限公司
+                                                            </div>
                                                         </td>
                                                         <td class="el-table_8_column_80 el-table__cell" rowspan="1"
                                                             colspan="1">
@@ -1024,4 +1036,3 @@
 
 <script setup lang="ts">
 </script>
-
