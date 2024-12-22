@@ -7,43 +7,53 @@ const routes: RouteRecordRaw[] = [
   },
   {
     path: '/home',
-    component: () => import('../views/home.vue')
-  },
-  {
-    path: '/graph',
-    component: () => import('../views/graph.vue')
-  },
-  {
-    path: '/messageManage',
-    component: () => import('../views/messageManage.vue'),
+    component: () => import('../views/home.vue'),
     children: [
       {
-        path: 'labManage',
-        component: () => import('../views/labManage.vue')
+        path: 'graph',
+        component: () => import('../views/graph.vue')
       },
       {
-        path: 'equipmentManage',
-        component: () => import('../views/equipmentManage.vue')
-      }
-      
-    ]
-  },
-  {
-    path: '/noticeManage',
-    component: () => import('../views/noticeManage.vue')
-  },
-  {
-    path: '/timetable',
-    component: () => import('../views/timetable.vue')
-  },
+        path: '/messageManage',
+        component: () => import('../views/messageManage.vue'),
+        children: [
+          {
+            path: 'labManage',
+            component: () => import('../views/labManage.vue')
+          },
+          {
+            path: 'equipmentManage',
+            component: () => import('../views/equipmentManage.vue')
+          }
 
-  {
-    path: '/appointment',
-    component: () => import('../views/appointment.vue')
-  },
-  {
-    path: '/appointmentApply',
-    component: () => import('../views/appointmentApply.vue')
+        ]
+      },
+      {
+        path: '/noticeManage',
+        component: () => import('../views/noticeManage.vue')
+      },
+      {
+        path: '/timetable',
+        component: () => import('../views/timetable.vue')
+      },
+
+      {
+        path: '/home/appointment',
+        component: () => import('../views/appointment.vue')
+      },
+      {
+        path: '/appointmentApply',
+        component: () => import('../views/appointmentApply.vue')
+      },
+      {
+        path: '/updatePassword',
+        component: () => import('../views/updatePassword.vue')
+      },
+      {
+        path: '/logout',
+        redirect: "/"
+      }
+    ]
   }
  
 ]

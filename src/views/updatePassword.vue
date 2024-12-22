@@ -1,7 +1,6 @@
 <template>
   <div >
-<!-- messageManage -->
-<router-view></router-view>
+修改密码
   </div>
 </template>
 
