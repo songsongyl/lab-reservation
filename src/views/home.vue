@@ -1,10 +1,13 @@
 <template>
     <div class="contain">
         <div class="left-nav">
+
             <el-row style="display: flex;" class="tac">
                 <el-col :span="30">
+                    <h5 class="left-head">实验室预约管理系统</h5>
                     <el-menu active-text-color="#ffd04b" background-color="#7eaa92" class="el-menu-vertical-demo"
                         default-active="2" text-color="#fff" @open="handleOpen" @close="handleClose">
+
                         <el-sub-menu style="margin-top: 40px;" index="1">
                             <template #title>
                                 <el-icon>
@@ -62,15 +65,10 @@
                 </el-col>
             </el-row>
         </div>
-        <div class="head">
-            <h5 class="head-left"
-                style="position: absolute; left: 10px; margin-bottom: 28px; color: black; z-index: 222;">
-                实验室预约管理系统</h5>
 
-        </div>
         <div class="right">
-            <div class="head-right">
-                <div class="head-right-title">
+            <div class="right-head">
+                <div class="right-head-title">
                     <el-avatar class="avatar"
                         src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" />
                     <span>个人中心</span>
@@ -84,7 +82,7 @@
                     </ul>
                 </div>
             </div>
-            <RouterView />
+            <RouterView id="routerview"/>
 
 
         </div>
@@ -105,13 +103,25 @@ const handleClose = (key: string, keyPath: string[]) => {
 }
 </script>
 <style scoped>
+*{
+    margin: 0;
+    padding: 0;
+}
 .contain {
     display: flex;
     height: 100vh;
+    width: 100vw;
 }
-
-.left-nav {
+.left-head {
     position: absolute;
+    left: 10px;
+    margin-bottom: 18px;
+    margin-top: 18px;
+    color: black;
+    z-index: 222;
+}
+.left-nav {
+    /* position: absolute; */
     left: 0px;
     top: 0px;
     background-color: #7eaa92;
@@ -119,42 +129,37 @@ const handleClose = (key: string, keyPath: string[]) => {
     height: 100vh;
 }
 
-
 .right {
     flex-grow: 1;
     padding: 20px;
-    margin-left: 150px;
 }
 
-.head {
-    width: 1350px;
-}
 
-.head-right {
-    position: relative;
-   
+.right-head {
     cursor: pointer;
-    width: 800px;
+    /* width: 800px; */
     height: 50px;
-    top: -35px;
-    margin-left: 350px;
+    top: -15px;
+
+    /* margin-left: 350px; */
 }
 
-.head-right-title {
+.right-head-title {
     position: absolute;
-    right: 0px;
+    right: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
 }
 
-.head-right .avatar {
+.right-head .avatar {
     margin-right: 5px;
     /* display: inline-block; */
 }
 
-.head-right ul {
+
+.right-head ul {
     display: none;
     list-style: none;
     flex-direction: column;
@@ -162,26 +167,29 @@ const handleClose = (key: string, keyPath: string[]) => {
     position: absolute;
     top: 100%;
     right: 0;
-    /* background-color: antiquewhite; */
-    /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); */
     padding: 10px 0;
     width: 80%;
 
 }
 
-.head-right ul li {
+.right-head ul li {
     margin: 8px;
     padding: 5px 10px;
     width: 100%;
     text-align: center;
 }
 
-.head-right-title:hover ul {
-    display: flex;
+.right-head span:hover,
+.right-head ul li:hover {
+    color: rgb(240, 172, 83);
 }
 
-.head-right span:hover,
-.head-right ul li:hover {
-    color: rgb(240, 172, 83);
+.right-head-title:hover ul {
+    display: flex;
+    z-index: 222;
+}
+
+#routerview {
+    width: 85%;
 }
 </style>

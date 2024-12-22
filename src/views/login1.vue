@@ -61,7 +61,9 @@ function handleValidation(isValid) {
     if (isValid) {
         alert("验证码验证通过");
         // 执行登录操作
-        // login()
+        // loginF()
+        
+        router.push("/home");  
     } else {
         alert("验证码验证失败");
         // 提示用户验证码错误
@@ -81,9 +83,6 @@ const loginF = async () => {
         })
         console.log("响应",response.data);
         homeView.value.validateCode();
-
-      
-        router.push("/home");  
     } catch (error) {
         if (error.response) {
             // 请求已发送，但服务器响应了状态码
