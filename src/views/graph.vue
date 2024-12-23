@@ -9,6 +9,7 @@
 <script>
 import { ref, onMounted } from "vue";
 import * as echarts from "echarts"; // 引入 ECharts
+import { reactive } from "vue";
 // import { r as Cl } from "../assets/js/request-BE1UvMV5.js";
 /* empty css             */
 // import { r as h2, a0 as v2, A as Dl, c as c2, a as Rt, t as Ml, o as p2 } from "../assets/js/index-HHlgu3jn.js";
@@ -22,11 +23,15 @@ export default {
         const labNumber = ref(128);
         const teacherNumber = ref(234);
         const user = ref(JSON.parse(localStorage.getItem("xm-user") || "{}"));
-
+        const form = reactive({
+            week: '',
+            dayOfWeek: '',
+            section: ''
+        })
         // 配置图表的参数
         const barChartOptions = ref({
             title: {
-                text: "各实验室不同状态设备数量柱状图",
+                text: "当前各实验室不同状态设备数量柱状图",
                 subtext: "",
                 left: "center",
             },
@@ -37,7 +42,7 @@ export default {
                 },
             },
             legend: {
-                data: ["空闲中", "使用中", "维修中"],
+                data: ["空闲中", "使用中"],
                 left: "left",
             },
             toolbox: {
@@ -57,8 +62,9 @@ export default {
                 {
                     type: "category",
                     axisTick: { show: false },
-                    data: [], // 实际数据需要动态加载
+                    data: ["901", "902", "903", "904", "905", "906"], // 实际数据需要动态加载
                     name: "实验室名称",
+                    // "font-weight":"bold"
                 },
             ],
             yAxis: [
@@ -73,28 +79,22 @@ export default {
                     type: "bar",
                     label: "空闲中",
                     emphasis: { focus: "series" },
-                    data: [1000, 1200], // 这些数据应该是动态的
+                    data: [400, 200, 250, 150, 56, 100], // 这些数据应该是动态的
                 },
                 {
                     name: "使用中",
                     type: "bar",
                     label: "使用中",
                     emphasis: { focus: "series" },
-                    data: [220, 182],
+                    data: [60, 182, 184, 178, 190, 234],
                 },
-                {
-                    name: "维修中",
-                    type: "bar",
-                    label: "维修中",
-                    emphasis: { focus: "series" },
-                    data: [150, 232],
-                },
+
             ],
         });
 
         const pieChartOptions = ref({
             title: {
-                text: "各实验室不同状态设备分布饼状图",
+                text: "当前各实验室不同状态分布饼状图",
                 left: "center",
             },
             tooltip: {
@@ -140,25 +140,25 @@ export default {
 
         const academyBarChartOptions = ref({
             title: {
-                text: "各学院设备数量柱状图",
+                text: "当前周各实验室占用情况柱状图",
                 subtext: "",
                 left: "center",
             },
             xAxis: {
                 type: "category",
                 data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-                name: "学院名称",
+                name: "星期",
             },
             yAxis: {
                 type: "value",
-                name: "设备数量(个)",
+                name: "实验室数量(个)",
             },
             tooltip: {
                 trigger: "item",
             },
             series: [
                 {
-                    data: [120, 200, 150, 80, 70, 110, 130],
+                    data: [3, 4, 2, 5, 6, 2, 1],
                     type: "bar",
                     itemStyle: {
                         normal: {
@@ -177,7 +177,7 @@ export default {
         // 获取数据
         const fetchData = async () => {
             try {
-                const response = await fetch(`/admin/getData/${user.value.id}`);
+                const response = await fetch(`/admin/getData`);
                 const data = await response.json();
                 if (data.code === "200") {
                     leisureEquipment.value = data.data.leisureEquipment;
@@ -192,39 +192,63 @@ export default {
                 console.error("请求数据失败", error);
             }
         };
+        const second = async () => {
+            try {
+                // const jsonString = JSON.stringify(form)
+                // console.log(jsonString)
+                const request = await axios.get("http://localhost:8080/admin/getData", {
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                console.log("请求", request.data);
 
-        // 初始化 ECharts 图表
-        const initCharts = () => {
-            const barChart = echarts.init(document.getElementById("bar-chart"));
-            barChart.setOption(barChartOptions.value);
+            } catch (error) {
+                if (error.response) {
+                    // 请求已发送，但服务器响应了状态码
+                    console.error("响应错误:", error.response.data);
+                } else if (error.request) {
+                    // 请求已发送，但没有收到响应
+                    console.error("没有收到响应:", error.request);
+                } else {
+                    // 发生错误时的设置
+                    console.error("请求错误:", error.message);
+                }
+            };
+            // 初始化 ECharts 图表
+            const initCharts = () => {
+                const barChart = echarts.init(document.getElementById("bar-chart"));
+                barChart.setOption(barChartOptions.value);
 
-            const pieChart = echarts.init(document.getElementById("pie-chart"));
-            pieChart.setOption(pieChartOptions.value);
+                const pieChart = echarts.init(document.getElementById("pie-chart"));
+                pieChart.setOption(pieChartOptions.value);
 
-            const academyBarChart = echarts.init(
-                document.getElementById("bar-chart-academy")
-            );
-            academyBarChart.setOption(academyBarChartOptions.value);
-        };
+                const academyBarChart = echarts.init(
+                    document.getElementById("bar-chart-academy")
+                );
+                academyBarChart.setOption(academyBarChartOptions.value);
+            };
 
-        // 生命周期钩子
-        onMounted(() => {
-            fetchData();
-            initCharts();
-        });
+            // 生命周期钩子
+            onMounted(() => {
+                // fetchData();
+                second();
+                initCharts();
+            });
 
-        return {
-            leisureEquipment,
-            useEquipment,
-            repairEquipment,
-            labNumber,
-            teacherNumber,
-            barChartOptions,
-            pieChartOptions,
-            academyBarChartOptions,
-        };
-    },
-};
+            return {
+                leisureEquipment,
+                useEquipment,
+                repairEquipment,
+                labNumber,
+                teacherNumber,
+                barChartOptions,
+                pieChartOptions,
+                academyBarChartOptions,
+            };
+        }
+    }
+}
 </script>
 
 <style scoped>

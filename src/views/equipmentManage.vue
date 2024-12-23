@@ -1035,4 +1035,217 @@
 </template>
 
 <script setup lang="ts">
+
+// import '../assets/js/Equipment-1s162117.js'
 </script>
+<style scoped>
+* {
+    box-sizing: border-box;
+    padding: 0px;
+    margin: 0px;
+}
+
+
+.manager-main-right {
+    /* flex: 1; */
+    /* width: 0; */
+    background-color: #f8f8ff;
+    padding: 10px;
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 0 10px #0000001a;
+}
+
+.el-input {
+    --el-input-height: var(--el-component-size);
+    position: relative;
+    font-size: var(--el-font-size-base);
+    display: inline-flex;
+    width: var(--el-input-width);
+    line-height: var(--el-input-height);
+    box-sizing: border-box;
+    vertical-align: middle;
+}
+
+.el-input__wrapper {
+    display: inline-flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+    padding: 1px 11px;
+    background-color: var(--el-input-bg-color, var(--el-fill-color-blank));
+    background-image: none;
+    border-radius: var(--el-input-border-radius, var(--el-border-radius-base));
+    cursor: text;
+    transition: var(--el-transition-box-shadow);
+    transform: translateZ(0);
+    box-shadow: 0 0 0 1px var(--el-input-border-color, var(--el-border-color)) inset;
+}
+
+.el-input__prefix {
+    display: inline-flex;
+    white-space: nowrap;
+    flex-shrink: 0;
+    flex-wrap: nowrap;
+    height: 100%;
+    text-align: center;
+    color: var(--el-input-icon-color, var(--el-text-color-placeholder));
+    transition: all var(--el-transition-duration);
+    pointer-events: none;
+}
+
+.el-input__prefix-inner {
+    pointer-events: all;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.el-icon svg {
+    height: 1em;
+    width: 1em;
+}
+
+.el-input__prefix-inner>:first-child,
+.el-input__prefix-inner>:first-child.el-input__icon {
+    margin-left: 0;
+}
+
+.el-input__inner {
+    --el-input-inner-height: calc(var(--el-input-height, 32px) - 2px);
+    width: 100%;
+    flex-grow: 1;
+    -webkit-appearance: none;
+    color: var(--el-input-text-color, var(--el-text-color-regular));
+    font-size: inherit;
+    height: var(--el-input-inner-height);
+    line-height: var(--el-input-inner-height);
+    padding: 0;
+    outline: none;
+    border: none;
+    background: none;
+    box-sizing: border-box;
+}
+
+.el-select {
+    --el-select-border-color-hover: var(--el-border-color-hover);
+    --el-select-disabled-color: var(--el-disabled-text-color);
+    --el-select-disabled-border: var(--el-disabled-border-color);
+    --el-select-font-size: var(--el-font-size-base);
+    --el-select-close-hover-color: var(--el-text-color-secondary);
+    --el-select-input-color: var(--el-text-color-placeholder);
+    --el-select-multiple-input-color: var(--el-text-color-regular);
+    --el-select-input-focus-border-color: var(--el-color-primary);
+    --el-select-input-font-size: 14px;
+    --el-select-width: 100%;
+}
+
+.el-select__wrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+    box-sizing: border-box;
+    cursor: pointer;
+    text-align: left;
+    font-size: 14px;
+    padding: 4px 12px;
+    gap: 6px;
+    min-height: 32px;
+    line-height: 24px;
+    border-radius: var(--el-border-radius-base);
+    background-color: var(--el-fill-color-blank);
+    transition: var(--el-transition-duration);
+    box-shadow: 0 0 0 1px var(--el-border-color) inset;
+}
+
+.el-select__selection {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+    gap: 6px;
+}
+
+.el-select__input-wrapper.is-hidden {
+    position: absolute;
+    opacity: 0;
+}
+
+.el-select__input {
+    border: none;
+    outline: none;
+    padding: 0;
+    color: var(--el-select-multiple-input-color);
+    font-size: inherit;
+    font-family: inherit;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    height: 24px;
+    max-width: 100%;
+    background-color: transparent;
+}
+
+.el-select__prefix,
+.el-select__suffix {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    gap: 6px;
+    color: var(--el-input-icon-color, var(--el-text-color-placeholder));
+}
+
+.el-select__prefix,
+.el-select__suffix {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    gap: 6px;
+    color: var(--el-input-icon-color, var(--el-text-color-placeholder));
+}
+
+.el-icon svg {
+    height: 1em;
+    width: 1em;
+}
+
+.el-button--info.is-plain,
+.el-button--info.is-text,
+.el-button--info.is-link {
+    --el-button-text-color: var(--el-color-info);
+    --el-button-bg-color: var(--el-color-info-light-9);
+    --el-button-border-color: var(--el-color-info-light-5);
+    --el-button-hover-text-color: var(--el-color-white);
+    --el-button-hover-bg-color: var(--el-color-info);
+    --el-button-hover-border-color: var(--el-color-info);
+    --el-button-active-text-color: var(--el-color-white);
+}
+
+.el-button>span {
+    display: inline-flex;
+    align-items: center;
+}
+
+.el-button--warning.is-plain,
+.el-button--warning.is-text,
+.el-button--warning.is-link {
+    --el-button-text-color: var(--el-color-warning);
+    --el-button-bg-color: var(--el-color-warning-light-9);
+    --el-button-border-color: var(--el-color-warning-light-5);
+    --el-button-hover-text-color: var(--el-color-white);
+    --el-button-hover-bg-color: var(--el-color-warning);
+    --el-button-hover-border-color: var(--el-color-warning);
+    --el-button-active-text-color: var(--el-color-white);
+}
+
+.el-button>span {
+    display: inline-flex;
+    align-items: center;
+}
+</style>

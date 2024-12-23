@@ -119,6 +119,7 @@ const handleClose = (key: string, keyPath: string[]) => {
     margin-top: 18px;
     color: black;
     z-index: 222;
+ 
 }
 .left-nav {
     /* position: absolute; */
@@ -126,7 +127,7 @@ const handleClose = (key: string, keyPath: string[]) => {
     top: 0px;
     background-color: #7eaa92;
     width: 164px;
-    height: 100vh;
+    height: 170vh;
 }
 
 .right {
@@ -191,5 +192,6 @@ const handleClose = (key: string, keyPath: string[]) => {
 
 #routerview {
     width: 85%;
+    height: 85%;
 }
 </style>
