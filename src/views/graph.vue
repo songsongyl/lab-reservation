@@ -180,18 +180,18 @@ export default {
         // 获取数据
         const fetchData = async () => {
             try {
-                const response = await fetch(`http://localhost:8080/admin/getData`);
+                const response = await fetch(`http://localhost:8080/api/admin/getData`);
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
                 const data = await response.json();
                 console.log(data);
                 if (data.code === "200") {
-                    leisureEquipment.value = data.data.leisureEquipment;
-                    useEquipment.value = data.data.useEquipment;
+                    // leisureEquipment.value = data.data.leisureEquipment;
+                    // useEquipment.value = data.data.useEquipment;
                     repairLab.value = data.data.repairLab;
-                    labNumber.value = data.data.labNumber;
-                    teacherNumber.value = data.data.teacherNumber;
+                    leisureLab.value = data.data.leisureLab;
+                    useLab.value = data.data.useLab;
                 } else {
                     console.error("获取数据错误");
                 }
@@ -204,12 +204,9 @@ export default {
                 // const jsonString = JSON.stringify(form)
                 // console.log(jsonString)
                 console.log("11");
-                const request = await axios.get("http://localhost:8080/admin/getData", {
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
+                const request = await axios.get("http://localhost:8080/api/admin/getData")
                 console.log("请求", request.data.data);
+                console.log("22");
                 const data = request.data;  // 假设是返回的数据结构
                 if (data && data.data) {
                     repairLab.value = data.data.repairLab;
@@ -248,8 +245,8 @@ export default {
 
             // 生命周期钩子
             onMounted(() => {
-                fetchData();
-                // second();
+                // fetchData();
+                second();
                 initCharts();
             });
 
@@ -257,8 +254,8 @@ export default {
                 leisureEquipment,
                 useEquipment,
                 repairLab,
-                labNumber,
-                teacherNumber,
+                leisureLab,
+                useLab,
                 barChartOptions,
                 pieChartOptions,
                 academyBarChartOptions,
