@@ -10,6 +10,7 @@
 import { ref, onMounted } from "vue";
 import * as echarts from "echarts"; // 引入 ECharts
 import { reactive } from "vue";
+import axios from 'axios';
 // import { r as Cl } from "../assets/js/request-BE1UvMV5.js";
 /* empty css             */
 // import { r as h2, a0 as v2, A as Dl, c as c2, a as Rt, t as Ml, o as p2 } from "../assets/js/index-HHlgu3jn.js";
@@ -19,8 +20,10 @@ export default {
         // 响应式数据
         const leisureEquipment = ref(2537);
         const useEquipment = ref(146);
-        const repairEquipment = ref(352);
+        const repairLab = ref(352);
         const labNumber = ref(128);
+        const leisureLab = ref(5);
+        const useLab = ref(2);
         const teacherNumber = ref(234);
         const user = ref(JSON.parse(localStorage.getItem("xm-user") || "{}"));
         const form = reactive({
@@ -177,12 +180,16 @@ export default {
         // 获取数据
         const fetchData = async () => {
             try {
-                const response = await fetch(`/admin/getData`);
+                const response = await fetch(`http://localhost:8080/admin/getData`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
                 const data = await response.json();
+                console.log(data);
                 if (data.code === "200") {
                     leisureEquipment.value = data.data.leisureEquipment;
                     useEquipment.value = data.data.useEquipment;
-                    repairEquipment.value = data.data.repairEquipment;
+                    repairLab.value = data.data.repairLab;
                     labNumber.value = data.data.labNumber;
                     teacherNumber.value = data.data.teacherNumber;
                 } else {
@@ -196,13 +203,22 @@ export default {
             try {
                 // const jsonString = JSON.stringify(form)
                 // console.log(jsonString)
+                console.log("11");
                 const request = await axios.get("http://localhost:8080/admin/getData", {
                     headers: {
                         'Content-Type': 'application/json'
                     }
                 })
-                console.log("请求", request.data);
-
+                console.log("请求", request.data.data);
+                const data = request.data;  // 假设是返回的数据结构
+                if (data && data.data) {
+                    repairLab.value = data.data.repairLab;
+                    useLab.value = data.data.useLab;
+                    leisureLab.value = data.data.leisureLab;
+                } else {
+                    console.error("返回的数据格式不正确");
+                }
+                
             } catch (error) {
                 if (error.response) {
                     // 请求已发送，但服务器响应了状态码
@@ -215,6 +231,7 @@ export default {
                     console.error("请求错误:", error.message);
                 }
             };
+        };
             // 初始化 ECharts 图表
             const initCharts = () => {
                 const barChart = echarts.init(document.getElementById("bar-chart"));
@@ -231,15 +248,15 @@ export default {
 
             // 生命周期钩子
             onMounted(() => {
-                // fetchData();
-                second();
+                fetchData();
+                // second();
                 initCharts();
             });
 
             return {
                 leisureEquipment,
                 useEquipment,
-                repairEquipment,
+                repairLab,
                 labNumber,
                 teacherNumber,
                 barChartOptions,
@@ -248,7 +265,7 @@ export default {
             };
         }
     }
-}
+
 </script>
 
 <style scoped>
