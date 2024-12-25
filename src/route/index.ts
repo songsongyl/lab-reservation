@@ -10,7 +10,7 @@ const routes: RouteRecordRaw[] = [
     component: () => import('../views/home.vue'),
     children: [
       {
-        path: 'graph',
+        path: '/graph',
         component: () => import('../views/graph.vue')
       },
       {
@@ -38,7 +38,7 @@ const routes: RouteRecordRaw[] = [
       },
 
       {
-        path: '/home/appointment',
+        path: '/appointment',
         component: () => import('../views/appointment.vue')
       },
       {

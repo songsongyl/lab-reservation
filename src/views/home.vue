@@ -16,7 +16,7 @@
                                 <span>预约管理</span>
                             </template>
                             <el-menu-item-group>
-                                <router-link :to="{ path: '/home/appointment' }"> <el-menu-item
+                                <router-link :to="{ path: '/appointment' }"> <el-menu-item
                                         index="1-1">当前预约</el-menu-item></router-link>
                                 <router-link :to="{ path: '/appointmentApply' }"> <el-menu-item
                                         index="1-2">申请预约</el-menu-item></router-link>
@@ -54,7 +54,7 @@
                                 <span>公告</span>
                             </el-menu-item>
                         </router-link>
-                        <router-link :to="{ path: '/home/graph' }"> <el-menu-item index="5">
+                        <router-link :to="{ path: '/graph' }"> <el-menu-item index="5">
                                 <el-icon>
                                     <TrendCharts />
                                 </el-icon>

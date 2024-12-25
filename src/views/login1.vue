@@ -81,7 +81,17 @@ const loginF = async () => {
                 'Content-Type':'application/json'
             }
         })
-        console.log("响应",response.data);
+        console.log("响应", response.data);
+        console.log(response.headers);
+        
+        if (response.data.token) {
+            // 如果返回的响应包含 token
+            // 将 token 存储到 localStorage
+            localStorage.setItem('authToken', response.data.token);
+            console.log('Token successfully stored');
+        } else {
+            console.log('Login failed');
+        }
         homeView.value.validateCode();
     } catch (error) {
         if (error.response) {

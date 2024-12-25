@@ -9,8 +9,11 @@
 <script>
 import { ref, onMounted } from "vue";
 import * as echarts from "echarts"; // 引入 ECharts
-import { reactive } from "vue";
+import { reactive,watch } from "vue";
 import axios from 'axios';
+
+// import { jwtDecode } from 'jwt-decode';
+// import { response } from "express";
 // import { r as Cl } from "../assets/js/request-BE1UvMV5.js";
 /* empty css             */
 // import { r as h2, a0 as v2, A as Dl, c as c2, a as Rt, t as Ml, o as p2 } from "../assets/js/index-HHlgu3jn.js";
@@ -177,57 +180,121 @@ export default {
             ],
         });
 
+        const checkTokenExpiration = () => {
+
+            const token = localStorage.getItem('authToken');
+            if (token) {
+                try {
+                    const decoded = jwtDecode(token);
+                    const currentTime = Date.now() / 1000;
+                    if (decoded.exp < currentTime) {
+                        alert("Token 已过期，请重新登录");
+                        window.location.href = '/';
+                    }
+                } catch (error) {
+                    console.error("无效的Token:", error);
+                    alert("Token 无效，请重新登录");
+                    window.location.href = '/';
+                }
+            } else {
+                alert("未找到 Token,请重新登录");
+                window.location.href = '/';
+            }
+        };
         // 获取数据
         const fetchData = async () => {
+
             try {
-                const response = await fetch(`http://localhost:8080/api/admin/getData`);
+                checkTokenExpiration();
+                const token = localStorage.getItem('authToken');
+                const response = await fetch("http://localhost:8080/api/admin/data", {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                const data = await response.json();
-                console.log(data);
-                if (data.code === "200") {
-                    // leisureEquipment.value = data.data.leisureEquipment;
-                    // useEquipment.value = data.data.useEquipment;
-                    repairLab.value = data.data.repairLab;
-                    leisureLab.value = data.data.leisureLab;
-                    useLab.value = data.data.useLab;
-                } else {
-                    console.error("获取数据错误");
+                try {
+                    const data = await response.json();
+                    if (data.code === 200) {
+                        repairLab.value = data.data.repairLab;
+                        leisureLab.value = data.data.leisureLab;
+                        useLab.value = data.data.useLab;
+                        // 更新 barChartOptions 和 pieChartOptions
+                        // barChartOptions.value.series[0].data = data.data.repairLabData;  // 假设返回了该数据
+                        // barChartOptions.value.series[1].data = data.data.useLabData;   // 假设返回了该数据
+
+                        // pieChartOptions.value.series[0].data = [
+                        //     { value: data.data.repairLab, name: "维修中" },
+                        //     { value: data.data.useLab, name: "使用中" },
+                        //     { value: data.data.leisureLab, name: "空闲中" }
+                        // ]
+                    } else {
+                        console.error("获取数据错误", data.message);
+                    }
+                } catch (error) {
+                    console.error("解析响应失败", error);
                 }
+
+                
             } catch (error) {
                 console.error("请求数据失败", error);
             }
         };
+        
         const second = async () => {
+            checkTokenExpiration();  
+            const token = localStorage.getItem('authToken');
             try {
                 // const jsonString = JSON.stringify(form)
                 // console.log(jsonString)
                 console.log("11");
-                const request = await axios.get("http://localhost:8080/api/admin/getData")
-                console.log("请求", request.data.data);
+              
+                const request = await axios.get("http://localhost:8080/api/admin/data", {
+                    headers: {
+                        // 'Authorization': `Bearer ${token}`
+                    }
+                })
+                console.log("请求", request.data);
                 console.log("22");
                 const data = request.data;  // 假设是返回的数据结构
                 if (data && data.data) {
-                    repairLab.value = data.data.repairLab;
-                    useLab.value = data.data.useLab;
-                    leisureLab.value = data.data.leisureLab;
+                    const { repairLab, useLab, leisureLab } = data.data;
+
+                    if (repairLab !== undefined) {
+                        repairLab.value = repairLab || 0;
+                    } else {
+                        console.error("repairLab 数据不存在");
+                    }
+
+                    if (useLab !== undefined) {
+                        useLab.value = useLab || 0;
+                    } else {
+                        console.error("useLab 数据不存在");
+                    }
+
+                    if (leisureLab !== undefined) {
+                        leisureLab.value = leisureLab || 0;
+                    } else {
+                        console.error("leisureLab 数据不存在");
+                    }
+
                 } else {
-                    console.error("返回的数据格式不正确");
+                    console.error("返回的数据格式不正确，缺少 data 字段");
                 }
-                
+               // initCharts();  // 在数据加载后初始化图表
+                console.log("22");
             } catch (error) {
                 if (error.response) {
-                    // 请求已发送，但服务器响应了状态码
                     console.error("响应错误:", error.response.data);
                 } else if (error.request) {
-                    // 请求已发送，但没有收到响应
                     console.error("没有收到响应:", error.request);
                 } else {
-                    // 发生错误时的设置
                     console.error("请求错误:", error.message);
                 }
-            };
+            }
         };
             // 初始化 ECharts 图表
             const initCharts = () => {
@@ -249,6 +316,13 @@ export default {
                 second();
                 initCharts();
             });
+        watch([repairLab, leisureLab, useLab], () => {
+            barChartOptions.value.series[0].data = [repairLab.value, leisureLab.value, useLab.value];
+            barChartOptions.value.series[1].data = [repairLab.value, leisureLab.value, useLab.value];
+            pieChartOptions.value.series[0].data[0].value = repairLab.value;
+            pieChartOptions.value.series[0].data[1].value = leisureLab.value;
+            pieChartOptions.value.series[0].data[2].value = useLab.value;
+        }, { immediate: true });
 
             return {
                 leisureEquipment,
