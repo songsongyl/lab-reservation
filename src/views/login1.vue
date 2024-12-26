@@ -9,7 +9,7 @@
                         <input type="password" placeholder="密码" v-model="form.password"  >
                     </div>
                     <HomeView ref="homeView" @code-validated="handleValidation" />
-                    <button class="bbutton" @click="loginF">登录</button>
+                    <button class="bbutton" @click="login">登录</button>
                 </div>
                 <div class="big-contain" key="bigContainRegister" v-else>
                     <span class="lab-span">实验室预约系统</span>
@@ -39,7 +39,8 @@ import HomeView from '../components/HomeView.vue'
 import { ref, computed, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
-
+import { loginApi } from '../apis/login.js';
+import { useUserInfoStore } from '../store/userinfo.store.js'
 const homeView = ref(null); // 创建一个 ref 引用
 const router = useRouter();
 var isLogin = ref(false)
@@ -48,7 +49,7 @@ var form = reactive({
     password: '',
     account: ''
 })
-
+const useInfoStore = useUserInfoStore()
 function changeType() {
     isLogin.value = !isLogin.value
     form.password = ''
@@ -70,30 +71,21 @@ function handleValidation(isValid) {
     }
 }
 
-//
-// http://10.181.9.75:8080/swagger-ui/swagger-ui/index.html#/login-controller/login
-const loginF = async () => {
-    try {
-        // const jsonString = JSON.stringify(form)
-        // console.log(jsonString)
-        const response = await axios.post("http://localhost:8080/api/login", form, {
-            headers: {
-                'Content-Type':'application/json'
-            }
-        })
-        console.log("响应", response.data);
-        console.log(response.headers);
-        
-        if (response.data.token) {
-            // 如果返回的响应包含 token
-            // 将 token 存储到 localStorage
-            localStorage.setItem('authToken', response.data.token);
-            console.log('Token successfully stored');
-        } else {
-            console.log('Login failed');
-        }
+
+const login = async () => {
+    try{
+        const res = await loginApi(form)
+        console.log(res.data);
+        console.log(res.token);
+        useInfoStore.setAuth(res.token, res.role, res.data);
+        // if (res.role === 'sqWf') {
+        //     router.push('/home')
+        // }
+        // if (res.role === 'wewe') {
+        //     router.push('/home')
+        // }
         homeView.value.validateCode();
-    } catch (error) {
+} catch (error) {
         if (error.response) {
             // 请求已发送，但服务器响应了状态码
             console.error("响应错误:", error.response.data);
@@ -105,10 +97,46 @@ const loginF = async () => {
             console.error("请求错误:", error.message);
         }
     }
+}
+//
+// http://10.181.9.75:8080/swagger-ui/swagger-ui/index.html#/login-controller/login
+// const loginF = async () => {
+//     try {
+//         // const jsonString = JSON.stringify(form)
+//         // console.log(jsonString)
+//         const response = await axios.post("http://localhost:8080/api/login", form, {
+//             headers: {
+//                 'Content-Type':'application/json'
+//             }
+//         })
+//         console.log("响应", response.data);
+//         console.log(response.headers);
+        
+//         if (response.data.token) {
+//             // 如果返回的响应包含 token
+//             // 将 token 存储到 localStorage
+//             localStorage.setItem('authToken', response.data.token);
+//             console.log('Token successfully stored');
+//         } else {
+//             console.log('Login failed');
+//         }
+//         homeView.value.validateCode();
+//     } catch (error) {
+//         if (error.response) {
+//             // 请求已发送，但服务器响应了状态码
+//             console.error("响应错误:", error.response.data);
+//         } else if (error.request) {
+//             // 请求已发送，但没有收到响应
+//             console.error("没有收到响应:", error.request);
+//         } else {
+//             // 发生错误时的设置
+//             console.error("请求错误:", error.message);
+//         }
+//     }
 
     
 
-}
+// }
 </script>
 
 <style scoped>
