@@ -54,7 +54,7 @@
                                 <span>公告</span>
                             </el-menu-item>
                         </router-link>
-                        <router-link :to="{ path: '/graph' }"> <el-menu-item index="5">
+                        <router-link :to="{ path: '/home/graph' }"> <el-menu-item index="5">
                                 <el-icon>
                                     <TrendCharts />
                                 </el-icon>

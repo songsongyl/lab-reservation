@@ -1,5 +1,6 @@
 <template>
     <div>
+   
         <div id="bar-chart"></div>
         <div id="pie-chart"></div>
         <div id="bar-chart-academy"></div>
@@ -11,7 +12,6 @@ import { ref, onMounted } from "vue";
 import * as echarts from "echarts"; // 引入 ECharts
 import { reactive,watch } from "vue";
 import axios from 'axios';
-
 // import { jwtDecode } from 'jwt-decode';
 // import { response } from "express";
 // import { r as Cl } from "../assets/js/request-BE1UvMV5.js";
@@ -223,6 +223,7 @@ export default {
 
                     if (repairLab !== undefined) {
                         repairLab.value = repairLab || 0;
+                        console.log(repairLab);
                     } else {
                         console.error("repairLab 数据不存在");
                     }
