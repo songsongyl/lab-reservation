@@ -1,9 +1,4 @@
-import  { useGet, usePost } from '../axios'
-// import { ADMIN, USER } from '../services/Const'
-
-// import { StoreCache } from './Decorators'
-
-// const processStore = useProcessStore()
+import  { useDelete, useGet, usePatch, usePost } from '../axios'
 
 export class UserCommonService {
     static getNews = async () => {
@@ -11,9 +6,17 @@ export class UserCommonService {
         return res
   }
       
-  
-  static updateSelfPassword = async (pwd: string) => {
-    await usePost('passwords', { password: pwd })
+  static deleteNews = async (id) => {
+   await useDelete('users/news/id')
+
   }
-  
+  static updateSelfPassword = async (pwd:string) => {
+    await usePatch('password', { password: pwd})
+  }
+  static updateNews = async (id: string,obj:object) => {
+    await usePatch('news/id', { id: id,obj })
+  }
+ static addNews = async (obj) => {
+    await usePost('news', { obj})
+  }
 }
