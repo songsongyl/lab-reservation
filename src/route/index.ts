@@ -1,8 +1,15 @@
 import { createRouter, createWebHashHistory, type RouteRecordRaw } from 'vue-router'
+// import { CommonService } from '../services'
 
+// declare module 'vue-router' {
+//   interface RouteMeta {
+//     roles?: string[]
+//   }
+// }
 const routes: RouteRecordRaw[] = [
     {
-      path: '/',
+    path: '/',
+      name:'/',
       component: () => import('../views/login1.vue')
   },
   {
@@ -30,7 +37,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         path: '/noticeManage',
-        component: () => import('../views/noticeManage.vue')
+        component: () => import('../views/noticeManage1.vue')
       },
       {
         path: '/timetable',
@@ -60,6 +67,19 @@ const routes: RouteRecordRaw[] = [
 const router = createRouter({
     history: createWebHashHistory(),
     routes
+})
+
+router.beforeEach((to, from) => {
+  // 排除，没有声明角色权限的路由
+  if (!to.meta.role) {
+    return true
+  }
+
+  if (to.meta.role != sessionStorage.getItem('role')) {
+    alert('无权限')
+    return {path:'/'}
+  }
+  return true
 })
 
 export default router

@@ -214,7 +214,7 @@
 // import '../assets/images/高校实验室设备管理系统_files/index-CgyPplEC.css'
 // import '../assets/images/高校实验室设备管理系统_files/input-Bjg2AMES.css'
 // import '../assets/images/高校实验室设备管理系统_files/overlay-CiOqQuXU.css'
-// import '../assets/images/高校实验室设备管理系统_files/request-B2HuQrq9.css'
+ import '../assets/js/Notice-Bnnt5bam.js'
 
 </script>
 <style scoped>
@@ -226,12 +226,15 @@
 
 
 .manager-main-right {
-  /* flex: 1; */
+  flex: 1;
   /* width: 0; */
   background-color: #f8f8ff;
   padding: 10px;
 }
-
+div {
+  display: block;
+  unicode-bidi: isolate;
+}
 .card {
   background-color: #fff;
   border-radius: 5px;
@@ -283,7 +286,18 @@
   align-items: center;
   justify-content: center;
 }
-
+.el-input__prefix-inner>:last-child {
+  margin-right: 8px;
+}
+.el-input .el-input__icon {
+  height: inherit;
+  line-height: inherit;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all var(--el-transition-duration);
+  margin-left: 8px;
+}
 .el-icon svg {
   height: 1em;
   width: 1em;
@@ -309,6 +323,231 @@
   background: none;
   box-sizing: border-box;
 }
+.el-button--info.is-plain,
+.el-button--info.is-text,
+.el-button--info.is-link {
+  --el-button-text-color: var(--el-color-info);
+  --el-button-bg-color: var(--el-color-info-light-9);
+  --el-button-border-color: var(--el-color-info-light-5);
+  --el-button-hover-text-color: var(--el-color-white);
+  --el-button-hover-bg-color: var(--el-color-info);
+  --el-button-hover-border-color: var(--el-color-info);
+  --el-button-active-text-color: var(--el-color-white);
+}
+.el-button>span {
+  display: inline-flex;
+  align-items: center;
+}
+.el-button--warning.is-plain,
+.el-button--warning.is-text,
+.el-button--warning.is-link {
+  --el-button-text-color: var(--el-color-warning);
+  --el-button-bg-color: var(--el-color-warning-light-9);
+  --el-button-border-color: var(--el-color-warning-light-5);
+  --el-button-hover-text-color: var(--el-color-white);
+  --el-button-hover-bg-color: var(--el-color-warning);
+  --el-button-hover-border-color: var(--el-color-warning);
+  --el-button-active-text-color: var(--el-color-white);
+}
+.el-button--danger.is-plain,
+.el-button--danger.is-text,
+.el-button--danger.is-link {
+  --el-button-text-color: var(--el-color-danger);
+  --el-button-bg-color: var(--el-color-danger-light-9);
+  --el-button-border-color: var(--el-color-danger-light-5);
+  --el-button-hover-text-color: var(--el-color-white);
+  --el-button-hover-bg-color: var(--el-color-danger);
+  --el-button-hover-border-color: var(--el-color-danger);
+  --el-button-active-text-color: var(--el-color-white);
+}
+.el-button+.el-button {
+  margin-left: 12px;
+}
+
+.el-table--fit {
+  border-right: 0;
+  border-bottom: 0;
+}
+
+.el-table {
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  height: fit-content;
+  width: 100%;
+  max-width: 100%;
+  background-color: var(--el-table-bg-color);
+  font-size: 14px;
+  color: var(--el-table-text-color);
+}
+
+.el-table {
+  --el-table-border-color: var(--el-border-color-lighter);
+  --el-table-border: 1px solid var(--el-table-border-color);
+  --el-table-text-color: var(--el-text-color-regular);
+  --el-table-header-text-color: var(--el-text-color-secondary);
+  --el-table-row-hover-bg-color: var(--el-fill-color-light);
+  --el-table-current-row-bg-color: var(--el-color-primary-light-9);
+  --el-table-header-bg-color: var(--el-bg-color);
+  --el-table-fixed-box-shadow: var(--el-box-shadow-light);
+  --el-table-bg-color: var(--el-fill-color-blank);
+  --el-table-tr-bg-color: var(--el-bg-color);
+  --el-table-expanded-cell-bg-color: var(--el-fill-color-blank);
+  --el-table-fixed-left-column: inset 10px 0 10px -10px rgba(0, 0, 0, .15);
+  --el-table-fixed-right-column: inset -10px 0 10px -10px rgba(0, 0, 0, .15);
+  --el-table-index: var(--el-index-normal);
+}
+.el-pagination {
+  --el-pagination-font-size: 14px;
+  --el-pagination-bg-color: var(--el-fill-color-blank);
+  --el-pagination-text-color: var(--el-text-color-primary);
+  --el-pagination-border-radius: 2px;
+  --el-pagination-button-color: var(--el-text-color-primary);
+  --el-pagination-button-width: 32px;
+  --el-pagination-button-height: 32px;
+  --el-pagination-button-disabled-color: var(--el-text-color-placeholder);
+  --el-pagination-button-disabled-bg-color: var(--el-fill-color-blank);
+  --el-pagination-button-bg-color: var(--el-fill-color);
+  --el-pagination-hover-color: var(--el-color-primary);
+  --el-pagination-font-size-small: 12px;
+  --el-pagination-button-width-small: 24px;
+  --el-pagination-button-height-small: 24px;
+  --el-pagination-item-gap: 16px;
+  white-space: nowrap;
+  color: var(--el-pagination-text-color);
+  font-size: var(--el-pagination-font-size);
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+}
+.el-pagination .btn-prev .el-icon,
+.el-pagination .btn-next .el-icon {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  width: inherit;
+}
+.el-pagination button * {
+  pointer-events: none;
+}
+.el-pager {
+  -webkit-user-select: none;
+  user-select: none;
+  list-style: none;
+  font-size: 0;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+.el-pager,
+.el-pager li {
+  align-items: center;
+  display: flex;
+}
+.el-pagination.is-background .btn-prev.is-active,
+.el-pagination.is-background .btn-next.is-active,
+.el-pagination.is-background .el-pager li.is-active {
+  background-color: var(--el-color-primary);
+  color: var(--el-color-white);
+}
+.el-pagination.is-background .btn-prev:disabled,
+.el-pagination.is-background .btn-prev.is-disabled,
+.el-pagination.is-background .btn-next:disabled,
+.el-pagination.is-background .btn-next.is-disabled,
+.el-pagination.is-background .el-pager li:disabled,
+.el-pagination.is-background .el-pager li.is-disabled {
+  color: var(--el-text-color-placeholder);
+  background-color: var(--el-disabled-bg-color);
+}
+.el-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2000;
+  height: 100%;
+  background-color: var(--el-overlay-color-lighter);
+  overflow: auto;
+}
+.el-overlay-dialog {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: auto;
+}
+el-popper.is-pure {
+  padding: 0;
+}
+
+.el-popper.is-light {
+  background: var(--el-bg-color-overlay);
+  border: 1px solid var(--el-border-color-light);
+}
+/* .el-scrollbar {
+  overflow: hidden;
+  position: relative;
+  height: 100%;
+} */
+
+/* .el-scrollbar {
+  --el-scrollbar-opacity: .3;
+  --el-scrollbar-bg-color: var(--el-text-color-secondary);
+  --el-scrollbar-hover-opacity: .5;
+  --el-scrollbar-hover-bg-color: var(--el-text-color-secondary);
+}
+.el-scrollbar__wrap--hidden-default {
+  scrollbar-width: none;
+}
+
+.el-scrollbar__wrap {
+  overflow: auto;
+  height: 100%;
+}
+.el-dropdown__popper .el-dropdown__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+.el-dropdown__popper .el-dropdown-menu {
+  border: none;
+}
+
+.el-dropdown__popper .el-dropdown-menu {
+  border: none;
+}
+
+.el-dropdown-menu {
+  position: relative;
+  top: 0;
+  left: 0;
+  z-index: var(--el-dropdown-menu-index);
+  padding: 5px 0;
+  margin: 0;
+  background-color: var(--el-bg-color-overlay);
+  border: none;
+  border-radius: var(--el-border-radius-base);
+  box-shadow: none;
+  list-style: none;
+}
+.el-dropdown-menu__item {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  list-style: none;
+  line-height: 22px;
+  padding: 5px 16px;
+  margin: 0;
+  font-size: var(--el-font-size-base);
+  color: var(--el-text-color-regular);
+  cursor: pointer;
+  outline: none;
+} */
 
 .el-select {
   --el-select-border-color-hover: var(--el-border-color-hover);
@@ -406,10 +645,7 @@
   --el-button-active-text-color: var(--el-color-white);
 }
 
-.el-button>span {
-  display: inline-flex;
-  align-items: center;
-}
+
 
 .el-button--warning.is-plain,
 .el-button--warning.is-text,
@@ -423,10 +659,6 @@
   --el-button-active-text-color: var(--el-color-white);
 }
 
-.el-button>span {
-  display: inline-flex;
-  align-items: center;
-}
 
 </style>
 

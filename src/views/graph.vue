@@ -12,6 +12,7 @@ import { ref, onMounted } from "vue";
 import * as echarts from "echarts"; // 引入 ECharts
 import { reactive,watch } from "vue";
 import axios from 'axios';
+import { UserCommonService } from '../services/UserService.ts'
 // import { jwtDecode } from 'jwt-decode';
 // import { response } from "express";
 // import { r as Cl } from "../assets/js/request-BE1UvMV5.js";
@@ -21,19 +22,58 @@ export default {
     name: "DataAnalysis",
     setup() {
         // 响应式数据
-        const leisureEquipment = ref(2537);
-        const useEquipment = ref(146);
-        const repairLab = ref(352);
-        const labNumber = ref(128);
-        const leisureLab = ref(5);
-        const useLab = ref(2);
-        const teacherNumber = ref(234);
-        const user = ref(JSON.parse(localStorage.getItem("xm-user") || "{}"));
+        const leisureEquipment = ref();
+        const useEquipment = ref();
+        const repairLab = ref();
+        const leisureLab = ref();
+        const useLab = ref();
         const form = reactive({
             week: '',
             dayOfWeek: '',
             section: ''
         })
+        const second = async () => {
+            console.log(sessionStorage.getItem('token'));
+            // checkTokenExpiration()
+            console.log(sessionStorage.getItem('role'));
+            const request = await UserCommonService.getGraph();
+            console.log(226);
+            // const token = localStorage.getItem('authToken');
+            try {
+                console.log("11");
+                console.log(sessionStorage.getItem('token'));
+                console.log("请求", request);
+                // console.log(request.headers);
+                // console.log(request.data.code);
+                console.log("22");
+                const data = request;
+                if (data) {
+                    for (let i = 0; i < 3; i++) {
+                        if (data[i].state == 0) {
+                            repairLab.value = data[i].quantity;
+                            console.log(repairLab.value);
+                        } else if (data[i].state == 1) {
+                            leisureLab.value = data[i].quantity
+                        } else {
+                            useLab.value = data[i].quantity
+                        }
+                    }
+
+                } else {
+                    console.error("返回的数据格式不正确，缺少 data 字段");
+                }
+                initCharts();  // 在数据加载后初始化图表
+                console.log("44");
+            } catch (error) {
+                if (error.response) {
+                    console.error("响应错误:", error.response);
+                } else if (error.request) {
+                    console.error("没有收到响应:", error.request);
+                } else {
+                    console.error("请求错误:", error.message);
+                }
+            }
+        };
         // 配置图表的参数
         const barChartOptions = ref({
             title: {
@@ -121,17 +161,18 @@ export default {
                     },
                     data: [
                         {
-                            value: 1048,
+                            value: repairLab,
+                            name: "维修中",
+                        },
+                        {
+                            value: leisureLab,
                             name: "空闲中",
                         },
                         {
-                            value: 735,
+                            value: useLab,
                             name: "使用中",
                         },
-                        {
-                            value: 580,
-                            name: "维修中",
-                        },
+                        
                     ],
                     emphasis: {
                         itemStyle: {
@@ -181,8 +222,7 @@ export default {
         });
 
         // const checkTokenExpiration = () => {
-
-        //     const token = localStorage.getItem('authToken');
+        //     const token = sessionStorage.getItem('token');
         //     if (token) {
         //         try {
         //             const decoded = jwtDecode(token);
@@ -201,60 +241,8 @@ export default {
         //         window.location.href = '/';
         //     }
         // };
-        // 获取数据
-        
-        const second = async () => {
-         
-            try {
-                // const jsonString = JSON.stringify(form)
-                // console.log(jsonString)
-                console.log("11");
-              
-                const request = await axios.get("/api/admin/graph", {
-                    headers: {
-                        // 'Authorization': `Bearer ${token}`
-                    }
-                })
-                console.log("请求", request.data);
-                console.log("22");
-                const data = request.data;  // 假设是返回的数据结构
-                if (data && data.data) {
-                    const { repairLab, useLab, leisureLab } = data.data;
-
-                    if (repairLab !== undefined) {
-                        repairLab.value = repairLab || 0;
-                        console.log(repairLab);
-                    } else {
-                        console.error("repairLab 数据不存在");
-                    }
-
-                    if (useLab !== undefined) {
-                        useLab.value = useLab || 0;
-                    } else {
-                        console.error("useLab 数据不存在");
-                    }
-
-                    if (leisureLab !== undefined) {
-                        leisureLab.value = leisureLab || 0;
-                    } else {
-                        console.error("leisureLab 数据不存在");
-                    }
-
-                } else {
-                    console.error("返回的数据格式不正确，缺少 data 字段");
-                }
-               // initCharts();  // 在数据加载后初始化图表
-                console.log("22");
-            } catch (error) {
-                if (error.response) {
-                    console.error("响应错误:", error.response.data);
-                } else if (error.request) {
-                    console.error("没有收到响应:", error.request);
-                } else {
-                    console.error("请求错误:", error.message);
-                }
-            }
-        };
+       
+      
             // 初始化 ECharts 图表
             const initCharts = () => {
                 const barChart = echarts.init(document.getElementById("bar-chart"));
@@ -273,15 +261,8 @@ export default {
             onMounted(() => {
                 // fetchData();
                 second();
-                initCharts();
+                // initCharts();
             });
-        watch([repairLab, leisureLab, useLab], () => {
-            barChartOptions.value.series[0].data = [repairLab.value, leisureLab.value, useLab.value];
-            barChartOptions.value.series[1].data = [repairLab.value, leisureLab.value, useLab.value];
-            pieChartOptions.value.series[0].data[0].value = repairLab.value;
-            pieChartOptions.value.series[0].data[1].value = leisureLab.value;
-            pieChartOptions.value.series[0].data[2].value = useLab.value;
-        }, { immediate: true });
 
             return {
                 leisureEquipment,

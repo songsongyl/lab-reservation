@@ -38,9 +38,10 @@
 import HomeView from '../components/HomeView.vue'
 import { ref, computed, reactive } from 'vue'
 import { useRouter } from 'vue-router'
-import axios from 'axios'
-import { loginApi } from '../apis/login.js';
-import { useUserInfoStore } from '../store/userinfo.store.js'
+// import axios from 'axios'
+// import { loginApi } from '../apis/login.js';
+// import { useUserInfoStore } from '../store/userinfo.store.js'
+import { CommonService } from '../services'
 const homeView = ref(null); // 创建一个 ref 引用
 const router = useRouter();
 var isLogin = ref(false)
@@ -49,7 +50,7 @@ var form = reactive({
     password: '',
     account: ''
 })
-const useInfoStore = useUserInfoStore()
+// const useInfoStore = useUserInfoStore()
 function changeType() {
     isLogin.value = !isLogin.value
     form.password = ''
@@ -73,55 +74,32 @@ function handleValidation(isValid) {
 
 
 const login = async () => {
-    try{
-        const res = await loginApi(form)
-        console.log(res.data);
-        console.log(res.token);
-        useInfoStore.setAuth(res.token, res.role, res.data);
-        // if (res.role === 'sqWf') {
-        //     router.push('/home')
-        // }
-        // if (res.role === 'wewe') {
-        //     router.push('/home')
-        // }
-        homeView.value.validateCode();
-} catch (error) {
-        if (error.response) {
-            // 请求已发送，但服务器响应了状态码
-            console.error("响应错误:", error.response.data);
-        } else if (error.request) {
-            // 请求已发送，但没有收到响应
-            console.error("没有收到响应:", error.request);
-        } else {
-            // 发生错误时的设置
-            console.error("请求错误:", error.message);
-        }
-    }
+    await CommonService.loginService({
+        account: form.account,
+        password:form.password
+    })
+    form.account = ''
+    form.password = ''
 }
-//
-// http://10.181.9.75:8080/swagger-ui/swagger-ui/index.html#/login-controller/login
-// const loginF = async () => {
-//     try {
-//         // const jsonString = JSON.stringify(form)
-//         // console.log(jsonString)
-//         const response = await axios.post("http://localhost:8080/api/login", form, {
-//             headers: {
-//                 'Content-Type':'application/json'
-//             }
-//         })
-//         console.log("响应", response.data);
-//         console.log(response.headers);
+
+// const login1 = async () => {
+//     try{
+//         const res = await loginApi(form)
+//         console.log(res);
         
-//         if (response.data.token) {
-//             // 如果返回的响应包含 token
-//             // 将 token 存储到 localStorage
-//             localStorage.setItem('authToken', response.data.token);
-//             console.log('Token successfully stored');
-//         } else {
-//             console.log('Login failed');
-//         }
+//         console.log(res.data);
+//         console.log(res.token);
+//         console.log(res.data.role);
+        
+//         useInfoStore.setAuth(res.token, res.data.role, res.data);
+//         // if (res.role === 'sqWf') {
+//         //     router.push('/home')
+//         // }
+//         // if (res.role === 'wewe') {
+//         //     router.push('/home')
+//         // }
 //         homeView.value.validateCode();
-//     } catch (error) {
+// } catch (error) {
 //         if (error.response) {
 //             // 请求已发送，但服务器响应了状态码
 //             console.error("响应错误:", error.response.data);
@@ -133,6 +111,8 @@ const login = async () => {
 //             console.error("请求错误:", error.message);
 //         }
 //     }
+// }
+
 
     
 

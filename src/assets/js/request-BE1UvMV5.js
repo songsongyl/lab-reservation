@@ -1612,12 +1612,12 @@ je.interceptors.request.use(e => {
         e
 }
     , e => Promise.reject(e));
-je.interceptors.response.use(e => {
-    let t = e.data;
-    return e.config.responseType === "blob" || (typeof t == "string" && (t = t && JSON.parse(t)),
-        t.code === "401" && qe.push("/login")),
-        t
-}
-    , e => (e.response.status === 404 ? se.error("未找到请求接口") : e.response.status === 500 ? se.error("系统异常，请查看后端控制台报错") : console.error(e.message),
-        Promise.reject(e)));
+// je.interceptors.response.use(e => {
+//     let t = e.data;
+//     return e.config.responseType === "blob" || (typeof t == "string" && (t = t && JSON.parse(t)),
+//         t.code === "401" && qe.push("/login")),
+//         t
+// }
+//     , e => (e.response.status === 404 ? se.error("未找到请求接口") : e.response.status === 500 ? se.error("系统异常，请查看后端控制台报错") : console.error(e.message),
+//         Promise.reject(e)));
 export { je as r };
