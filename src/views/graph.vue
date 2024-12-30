@@ -7,73 +7,100 @@
     </div>
 </template>
 
-<script>
+<script setup >
 import { ref, onMounted } from "vue";
 import * as echarts from "echarts"; // 引入 ECharts
 import { reactive,watch } from "vue";
 import axios from 'axios';
-import { UserCommonService } from '../services/UserService.ts'
+import { AdminCommonService } from '../services/AdminService.ts'
 // import { jwtDecode } from 'jwt-decode';
 // import { response } from "express";
 // import { r as Cl } from "../assets/js/request-BE1UvMV5.js";
-/* empty css             */
 // import { r as h2, a0 as v2, A as Dl, c as c2, a as Rt, t as Ml, o as p2 } from "../assets/js/index-HHlgu3jn.js";
-export default {
-    name: "DataAnalysis",
-    setup() {
         // 响应式数据
-        const leisureEquipment = ref();
-        const useEquipment = ref();
-        const repairLab = ref();
-        const leisureLab = ref();
-        const useLab = ref();
-        const form = reactive({
-            week: '',
-            dayOfWeek: '',
-            section: ''
+        let repairLab = ref();
+        let leisureLab = ref();
+        let useLab = ref();
+        let form = reactive({
+            week: ''
         })
-        const second = async () => {
-            console.log(sessionStorage.getItem('token'));
-            // checkTokenExpiration()
-            console.log(sessionStorage.getItem('role'));
-            const request = await UserCommonService.getGraph();
-            console.log(226);
-            // const token = localStorage.getItem('authToken');
-            try {
-                console.log("11");
-                console.log(sessionStorage.getItem('token'));
-                console.log("请求", request);
-                // console.log(request.headers);
-                // console.log(request.data.code);
-                console.log("22");
-                const data = request;
-                if (data) {
-                    for (let i = 0; i < 3; i++) {
-                        if (data[i].state == 0) {
-                            repairLab.value = data[i].quantity;
-                            console.log(repairLab.value);
-                        } else if (data[i].state == 1) {
-                            leisureLab.value = data[i].quantity
-                        } else {
-                            useLab.value = data[i].quantity
-                        }
-                    }
-
+        let weekArray = reactive([])
+        let labNames = reactive([])
+        let leisureEquipments = reactive([])
+        let useEquipments = reactive([])
+        
+// 提取错误处理函数
+const handleError = (error) => {
+    if (error.response) {
+        console.error("响应错误:", error.response);
+    } else if (error.request) {
+        console.error("没有收到响应:", error.request);
+    } else {
+        console.error("请求错误:", error.message);
+    }
+};
+const second = async () => {
+    try {
+        console.log(sessionStorage.getItem('token'));
+        const request = await AdminCommonService.getGraph2();
+        const data = request;
+        if (data) {
+            for (let i = 0; i < 3; i++) {
+                if (data[i].state === 0) {
+                    repairLab.value = data[i].quantity;
+                } else if (data[i].state === 1) {
+                    leisureLab.value = data[i].quantity;
                 } else {
-                    console.error("返回的数据格式不正确，缺少 data 字段");
+                    useLab.value = data[i].quantity;
                 }
-                initCharts();  // 在数据加载后初始化图表
-                console.log("44");
-            } catch (error) {
-                if (error.response) {
-                    console.error("响应错误:", error.response);
-                } else if (error.request) {
-                    console.error("没有收到响应:", error.request);
-                } else {
-                    console.error("请求错误:", error.message);
-                }
+                initCharts()
             }
-        };
+        } else {
+            console.error("返回的数据格式不正确，缺少 data 字段");
+        }
+    } catch (error) {
+        handleError(error);
+    }
+};
+
+const third = async () => {
+    try {
+        const request = await AdminCommonService.getGraph3();
+        const data = request;
+        if (data) {
+            data.forEach(item => {
+                weekArray.push(item.quantity);
+            });
+            initCharts()
+        } else {
+            console.error("返回的数据格式不正确，缺少 data 字段");
+        }
+    } catch (error) {
+        handleError(error);
+    }
+};
+
+const first = async () => {
+    try {
+        const request = await AdminCommonService.getGraph1();
+        const data = request.enableEquipmentCountList;
+        if (data) {
+            data.forEach(item => {
+                labNames.push(item.name);
+                leisureEquipments.push(item.enableQuantity);
+                useEquipments.push(item.unableQuantity);
+                initCharts()
+            });
+        } else {
+            console.error("返回的数据格式不正确，缺少 data 字段");
+        }
+    } catch (error) {
+        handleError(error);
+    }
+};
+function getData() {
+    second().then(() => third()).then(() => first());
+}       
         // 配置图表的参数
         const barChartOptions = ref({
             title: {
@@ -108,9 +135,8 @@ export default {
                 {
                     type: "category",
                     axisTick: { show: false },
-                    data: ["901", "902", "903", "904", "905", "906"], // 实际数据需要动态加载
-                    name: "实验室名称",
-                    // "font-weight":"bold"
+                    data: labNames, 
+                    name: "实验室名称"
                 },
             ],
             yAxis: [
@@ -125,14 +151,14 @@ export default {
                     type: "bar",
                     label: "空闲中",
                     emphasis: { focus: "series" },
-                    data: [400, 200, 250, 150, 56, 100], // 这些数据应该是动态的
+                    data: leisureEquipments, 
                 },
                 {
                     name: "使用中",
                     type: "bar",
                     label: "使用中",
                     emphasis: { focus: "series" },
-                    data: [60, 182, 184, 178, 190, 234],
+                    data: useEquipments
                 },
 
             ],
@@ -205,7 +231,7 @@ export default {
             },
             series: [
                 {
-                    data: [3, 4, 2, 5, 6, 2, 1],
+                    data: weekArray,
                     type: "bar",
                     itemStyle: {
                         normal: {
@@ -241,41 +267,32 @@ export default {
         //         window.location.href = '/';
         //     }
         // };
-       
-      
+            let barChart, pieChart, academyBarChart;
             // 初始化 ECharts 图表
             const initCharts = () => {
-                const barChart = echarts.init(document.getElementById("bar-chart"));
-                barChart.setOption(barChartOptions.value);
+                if (!barChart) {
+                    barChart = echarts.init(document.getElementById("bar-chart"));
+                }
+                if (!pieChart) {
+                    pieChart = echarts.init(document.getElementById("pie-chart"));
+                }
+                if (!academyBarChart) {
+                    academyBarChart = echarts.init(document.getElementById("bar-chart-academy"));
+                }
 
-                const pieChart = echarts.init(document.getElementById("pie-chart"));
-                pieChart.setOption(pieChartOptions.value);
-
-                const academyBarChart = echarts.init(
-                    document.getElementById("bar-chart-academy")
-                );
-                academyBarChart.setOption(academyBarChartOptions.value);
+                barChart.setOption(barChartOptions.value, false);
+                pieChart.setOption(pieChartOptions.value, false);
+                academyBarChart.setOption(academyBarChartOptions.value, false);
             };
-
+// 监听数据变化并更新图表
+watch([repairLab, leisureLab, useLab, weekArray], () => {
+    initCharts();
+});
             // 生命周期钩子
             onMounted(() => {
-                // fetchData();
-                second();
-                // initCharts();
-            });
-
-            return {
-                leisureEquipment,
-                useEquipment,
-                repairLab,
-                leisureLab,
-                useLab,
-                barChartOptions,
-                pieChartOptions,
-                academyBarChartOptions,
-            };
-        }
-    }
+                getData()
+                initCharts();
+            })
 
 </script>
 
