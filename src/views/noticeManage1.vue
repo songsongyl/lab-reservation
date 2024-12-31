@@ -56,17 +56,12 @@
     </div>
 </template>
 
-<script setup >
+<script setup lang="ts">
 // import  { TableColumnCtx } from 'element-plus'
 import { reactive,ref,computed } from 'vue';
 import { UserCommonService } from '../services/UserService.ts'
 import { Failed, ChatDotSquare } from '@element-plus/icons-vue'
-let News = {
-    updateTime:'',
-    title:'',
-    content:'',
-    author:''
-}
+
 const dialogVisible = ref(false);
 const currentPage = ref(1);
 let pagerCountValue = ref(8);
@@ -86,7 +81,7 @@ const currentPageData = computed(() => {
 });
 const tableData = reactive([]);
 const formData = reactive({
-    id: '',
+    id : '',
     updateTime: '',
     title: '',
     content: '',
@@ -111,6 +106,8 @@ const handlePageChange = (page) => {
     currentPage.value = page;
 };
 const handleEdit = (row) => {
+    console.log("row:" + row.id);
+    formData.id = row.id;
     formData.updateTime = row.updateTime;
     formData.title = row.title;
     formData.content = row.content;
@@ -120,22 +117,29 @@ const handleEdit = (row) => {
 
 const handleDelete = async (row) => {
     try {
-        // 假设UserCommonService有deleteNews方法
-        await UserCommonService.deleteNews(row);
-        fetchData();
+        const deleteId = await UserCommonService.deleteNews(row.id);
+        console.log(deleteId);
+        
+        if (deleteId) {
+            console.log("删除id存在",deleteId);           
+            fetchData();
+       }
     } catch (error) {
         console.error('Error deleting news:', error);
     }
 };
-
+let form =[]
 const handleSave = async () => {
     try {
-        if (formData.updateTime) {
+        if (formData.id) {
             // 编辑操作
             await UserCommonService.updateNews(formData.id,formData);
         } else {
             // 新增操作
-            await UserCommonService.addNews(formData);
+            form.author = formData.author
+            form.content = formData.content
+            form.title = formData.title
+            await UserCommonService.addNews(form);
         }
         dialogVisible.value = false;
         fetchData();
@@ -145,6 +149,7 @@ const handleSave = async () => {
 };
 
 const handleDialogClose = () => {
+    formData.id = '';
     formData.updateTime = '';
     formData.title = '';
     formData.content = '';
