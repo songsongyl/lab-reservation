@@ -2,12 +2,12 @@ import  { useDelete, useGet, usePatch, usePost } from '../axios'
 
 export class UserCommonService {
     static getNews = async () => {
-        const res = await useGet('users/news')
+        const res = await useGet('users/allnews')
         return res
   }
       
-  static deleteNews = async (id) => {
-   await useDelete('users/news/id')
+  static deleteNews = async (id: string) => {
+   await useDelete('admin/news/id',{id:id})
 
   }
   static updateSelfPassword = async (pwd:string) => {

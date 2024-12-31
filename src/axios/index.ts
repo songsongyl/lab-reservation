@@ -90,9 +90,9 @@ export const usePatch = async <T>(url: string, data: unknown) => {
   return resp.data.data
 }
 
-export const useDelete = async <T>(url: string) => {
-  const resp = await axios.delete<ResultVO<T>>(url)
-  return resp.data.data
+export const useDelete = async <T>(url: string,id:any) => {
+  const resp = await axios.delete<ResultVO<T>>(url,id)
+  return resp.data
 }
 
 export default axios
