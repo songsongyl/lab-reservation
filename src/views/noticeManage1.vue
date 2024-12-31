@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-button @Click="add()" style="text-align: center;display: flex;margin-left: 50px;"
+        <el-button @click="add()" style="text-align: center;display: flex;margin-left: 50px;"
             type="primary">新增</el-button>
         <el-table v-show="tableData.length>0" :data="currentPageData"
             :default-sort="{ prop: 'updateTime', order: 'descending' }" style="width: 100%;height: 100%;">
@@ -35,41 +35,27 @@
         <el-pagination :page-size="pageSize" background :pager-count="pagerCountValue" layout="prev, pager, next"
             :total="total" @current-change="handlePageChange" />
         <!-- 编辑/新增模态框 -->
+        <el-dialog class="dialog" title="编辑公告" v-show="dialogVisible" :visible.sync="dialogVisible" width="400" @close="handleDialogClose">
+            <el-form :model="formData" label-width="80px">
+                <el-form-item label="更新时间">
+                    <el-input v-model="formData.updateTime" disabled></el-input>
+                </el-form-item>
+                <el-form-item label="标题">
+                    <el-input v-model="formData.title"></el-input>
+                </el-form-item>
+                <el-form-item label="作者">
+                    <el-input v-model="formData.author"></el-input>
+                </el-form-item>
+                <el-form-item label="内容">
+                    <el-input type="textarea" v-model="formData.content"></el-input>
+                </el-form-item>
+            </el-form>
 
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">New message</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                     
-                            <el-form :model="formData" label-width="80px">
-                                <el-form-item label="更新时间">
-                                    <el-input v-model="formData.updateTime" disabled></el-input>
-                                </el-form-item>
-                                <el-form-item label="标题">
-                                    <el-input v-model="formData.title"></el-input>
-                                </el-form-item>
-                                <el-form-item label="作者">
-                                    <el-input v-model="formData.author"></el-input>
-                                </el-form-item>
-                                <el-form-item label="内容">
-                                    <el-input type="textarea" v-model="formData.content"></el-input>
-                                </el-form-item>
-                            </el-form>
-                            <el-button @click="">取消</el-button>
-                            <el-button type="primary" @click="handleSave">保存</el-button>
-                 
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Send message</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+            <el-button @click="dialogVisible = false">取消</el-button>
+            <el-button type="primary" @click="handleSave">保存</el-button>
+
+        </el-dialog>
+   
     </div>
 </template>
 
@@ -80,16 +66,14 @@ import { UserCommonService } from '../services/UserService.ts'
 import { AdminCommonService } from '../services/AdminService.ts'
 import { Failed, ChatDotSquare } from '@element-plus/icons-vue'
 
-
+let dialogVisible = ref(false);
 let currentPage = ref(1);
 let pagerCountValue = ref(8);
 let pageSize = ref(8)
 let total = ref(0)
 const add = async () => {
-    const modalelement = document.getElementsByClassName("modal")
-   modalelement
     const res: any = await AdminCommonService.addNews(form);
-
+    fetchData()
 }
 let modal = ref(true)
 const formatter = (row, column) => {
@@ -143,17 +127,16 @@ const handleEdit = (row) => {
     formData.title = row.title;
     formData.content = row.content;
     formData.author = row.author;
- 
+    dialogVisible.value = true;
+    console.log(dialogVisible.value);
     
 };
 
 const handleDelete = async (row) => {
     try {
-        console.log(row.id);
-        
+        console.log(row.id);       
         const deleteId = await AdminCommonService.deleteNews(row.id);
-        console.log(deleteId);
-        
+        console.log(deleteId);   
         if (deleteId) {
             console.log("删除id存在",deleteId);           
             fetchData();
@@ -166,14 +149,14 @@ const handleDelete = async (row) => {
 const handleSave = async () => {
     try {
         if (formData.id) {
-            // 编辑操作
             await AdminCommonService.updateNews(formData);
         } 
- 
+        dialogVisible.value = false;
         fetchData();
     } catch (error) {
         console.error('Error saving news:', error);
     }
+    fetchData()
 };
 
 const handleDialogClose = () => {
@@ -216,8 +199,10 @@ fetchData();
     background-color: #ddd;
 }
 .dialog{
-    position: absolute;
-    left: 100px;
-    top: 150px;
+    position: fixed;
+    left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1000;
 }
 </style>

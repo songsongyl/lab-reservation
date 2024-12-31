@@ -20,9 +20,9 @@ export class AdminCommonService {
   }
  
   static updateNews = async (obj:object) => {
-    await usePatch('news',  obj )
+    await usePatch('admin/news',  obj )
   }
  static addNews = async (obj: unknown) => {
-    await usePost('news',  obj)
+    await usePost('admin/news',  obj)
   }
 }
