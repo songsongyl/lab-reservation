@@ -1,5 +1,7 @@
 <template>
     <div>
+        <el-button @Click="add()" style="text-align: center;display: flex;margin-left: 50px;"
+            type="primary">新增</el-button>
         <el-table v-show="tableData.length>0" :data="currentPageData"
             :default-sort="{ prop: 'updateTime', order: 'descending' }" style="width: 100%;height: 100%;">
             <el-table-column prop="updateTime" label="UpdateTime" sortable width="250" />
@@ -33,26 +35,41 @@
         <el-pagination :page-size="pageSize" background :pager-count="pagerCountValue" layout="prev, pager, next"
             :total="total" @current-change="handlePageChange" />
         <!-- 编辑/新增模态框 -->
-        <el-dialog title="编辑新闻" :visible.sync="dialogVisible" width="40%" @close="handleDialogClose">
-            <el-form :model="formData" label-width="80px">
-                <el-form-item label="更新时间">
-                    <el-input v-model="formData.updateTime" disabled></el-input>
-                </el-form-item>
-                <el-form-item label="标题">
-                    <el-input v-model="formData.title"></el-input>
-                </el-form-item>
-                <el-form-item label="作者">
-                    <el-input v-model="formData.author"></el-input>
-                </el-form-item>
-                <el-form-item label="内容">
-                    <el-input type="textarea" v-model="formData.content"></el-input>
-                </el-form-item>
-            </el-form>
 
-            <el-button @click="dialogVisible = false">取消</el-button>
-            <el-button type="primary" @click="handleSave">保存</el-button>
-
-        </el-dialog>
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">New message</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                     
+                            <el-form :model="formData" label-width="80px">
+                                <el-form-item label="更新时间">
+                                    <el-input v-model="formData.updateTime" disabled></el-input>
+                                </el-form-item>
+                                <el-form-item label="标题">
+                                    <el-input v-model="formData.title"></el-input>
+                                </el-form-item>
+                                <el-form-item label="作者">
+                                    <el-input v-model="formData.author"></el-input>
+                                </el-form-item>
+                                <el-form-item label="内容">
+                                    <el-input type="textarea" v-model="formData.content"></el-input>
+                                </el-form-item>
+                            </el-form>
+                            <el-button @click="">取消</el-button>
+                            <el-button type="primary" @click="handleSave">保存</el-button>
+                 
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Send message</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -60,13 +77,21 @@
 // import  { TableColumnCtx } from 'element-plus'
 import { reactive,ref,computed } from 'vue';
 import { UserCommonService } from '../services/UserService.ts'
+import { AdminCommonService } from '../services/AdminService.ts'
 import { Failed, ChatDotSquare } from '@element-plus/icons-vue'
 
-const dialogVisible = ref(false);
-const currentPage = ref(1);
+
+let currentPage = ref(1);
 let pagerCountValue = ref(8);
 let pageSize = ref(8)
 let total = ref(0)
+const add = async () => {
+    const modalelement = document.getElementsByClassName("modal")
+   modalelement
+    const res: any = await AdminCommonService.addNews(form);
+
+}
+let modal = ref(true)
 const formatter = (row, column) => {
     const maxLength = 10; // 设置截断长度
     if (row.content.length > maxLength) {
@@ -79,7 +104,7 @@ const currentPageData = computed(() => {
     const end = start + pageSize.value;
     return tableData.slice(start, end);
 });
-const tableData = reactive([]);
+const tableData:any = reactive([]);
 const formData = reactive({
     id : '',
     updateTime: '',
@@ -87,11 +112,17 @@ const formData = reactive({
     content: '',
     author: ''
 });
+const form = reactive({
+    updateTime: '',
+    title: '',
+    content: '',
+    author: ''
+});
 const fetchData = async () => {
     try {
-        const res = await UserCommonService.getNews();
+        const res:any = await UserCommonService.getNews();
         tableData.length = 0;
-        res.forEach((item) => {
+        res.forEach((item:any) => {
             tableData.push(item);
         });
         total.value = res.length
@@ -112,12 +143,15 @@ const handleEdit = (row) => {
     formData.title = row.title;
     formData.content = row.content;
     formData.author = row.author;
-    dialogVisible.value = true;
+ 
+    
 };
 
 const handleDelete = async (row) => {
     try {
-        const deleteId = await UserCommonService.deleteNews(row.id);
+        console.log(row.id);
+        
+        const deleteId = await AdminCommonService.deleteNews(row.id);
         console.log(deleteId);
         
         if (deleteId) {
@@ -128,20 +162,14 @@ const handleDelete = async (row) => {
         console.error('Error deleting news:', error);
     }
 };
-let form =[]
+
 const handleSave = async () => {
     try {
         if (formData.id) {
             // 编辑操作
-            await UserCommonService.updateNews(formData.id,formData);
-        } else {
-            // 新增操作
-            form.author = formData.author
-            form.content = formData.content
-            form.title = formData.title
-            await UserCommonService.addNews(form);
-        }
-        dialogVisible.value = false;
+            await AdminCommonService.updateNews(formData);
+        } 
+ 
         fetchData();
     } catch (error) {
         console.error('Error saving news:', error);
@@ -186,5 +214,10 @@ fetchData();
 .custom-pagination.el -pagination__button:hover,
 .custom-pagination.el- pagination__pager:hover {
     background-color: #ddd;
+}
+.dialog{
+    position: absolute;
+    left: 100px;
+    top: 150px;
 }
 </style>

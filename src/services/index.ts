@@ -4,15 +4,19 @@ import { ADMIN, USER } from '../services/Const'
 import { useProcessStore } from '../store/ProcessStore'
 import { useUserStore } from '../store/UserStore'
 import type { Process, ResultVO, User } from '../type'
-// import { StoreCache } from './Decorators'
 import {Ref} from 'vue'
+import { StoreCache } from './Decorators'
 const userStore = useUserStore()
 const processStore = useProcessStore()
 
 export class CommonService {
   // login
   static loginService = async (user: User) => {
+    if (user.account == null || user.password == null) {
+      alert('账号密码为空') 
+    }
     const resp = await axios.post<ResultVO<User>>('login', user)
+    
     const us = resp.data.data
     const token = resp.headers.token
     console.log(token);
@@ -35,14 +39,13 @@ export class CommonService {
   static updateSelfPassword = async (pwd: string) => {
     await usePost('passwords', { password: pwd })
   }
-
-    // 加缓存，不为空再发请求
   
-  // @StoreCache(processStore.processesS)
-  // static async listProcessesService() {
-  //   const data = await useGet<Process[]>('processes')
-  //   return data as unknown as Ref<Process[]>
-  // }
+    // 加缓存，不为空再发请求
+//   @StoreCache(processStore.processesS)
+//   static async listProcessesService() {
+//     const data = await useGet<Process[]>('processes')
+//     return data as unknown as Ref<Process[]>
+//   }
 
   static getRole() {
     return sessionStorage.getItem('role')

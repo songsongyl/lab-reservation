@@ -55,7 +55,6 @@ function changeType() {
     isLogin.value = !isLogin.value
     form.password = ''
     form.account = ''
- 
 }
 
 
@@ -64,20 +63,22 @@ function handleValidation(isValid) {
         alert("验证码验证通过");
         // 执行登录操作
         // loginF()
-        
         router.push("/home");  
     } else {
         alert("验证码验证失败");
+        router.push("/")
         // 提示用户验证码错误
     }
 }
 
 
 const login = async () => {
-    await CommonService.loginService({
+   await CommonService.loginService({
         account: form.account,
         password:form.password
-    })
+  })
+
+    homeView.value.validateCode();
     form.account = ''
     form.password = ''
 }
@@ -111,10 +112,7 @@ const login = async () => {
 //             console.error("请求错误:", error.message);
 //         }
 //     }
-// }
-
-
-    
+// }  
 
 // }
 </script>
