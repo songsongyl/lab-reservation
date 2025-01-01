@@ -1,13 +1,16 @@
 <template>
     <div>
-        <el-button @click="add()" style="text-align: center;display: flex;margin-left: 50px;"
-            type="primary">新增</el-button>
+        <div style="text-align: center;display: flex;">
+            <el-button @click=" add()" type="primary">新增</el-button>
+            <!-- 批量删除按钮 -->
+            <el-button @click="handleBatchDelete" type="danger" :disabled="selectedRows.length === 0"
+                style="margin-left: 50px;">批量删除</el-button>
+        </div>
         <el-table v-show="tableData.length>0" :data="currentPageData"
             :default-sort="{ prop: 'updateTime', order: 'descending' }" style="width: 100%;height: 100%;">
+            <el-table-column label="box" type="selection" width="60" @click="addBatch(row)">
+            </el-table-column>
             <el-table-column prop="updateTime" label="UpdateTime" sortable width="250">
-                <template slot-scope="scope">
-                    {{ formatDate(scope.row.updateTime) }}
-                </template>
             </el-table-column>
             <el-table-column prop="title" label="Title" width="200" />
             <el-table-column prop="author" label="Author" width="180" />
@@ -38,29 +41,37 @@
         </el-table>
         <el-pagination :page-size="pageSize" background :pager-count="pagerCountValue" layout="prev, pager, next"
             :total="total" @current-change="handlePageChange" />
-        <!-- 编辑/新增模态框 -->
-        <el-dialog class="dialog" title="编辑公告" v-show="dialogVisible" :visible.sync="dialogVisible" width="400"
-            @close="handleDialogClose">
+        <!-- 编辑模态框 -->
+        <el-dialog class="dialog" title="编辑公告" :visible.sync="dialogVisible">
             <el-form :model="formData" label-width="80px">
-                <el-form-item label="更新时间">
-                    <el-input v-model="formData.updateTime" disabled></el-input>
+                <el-form-item label="更新时间" label-width="120">
+                    <el-input v-model="formData.updateTime"></el-input>
                 </el-form-item>
-                <el-form-item label="标题">
+                <el-form-item label="标题" label-width="120">
                     <el-input v-model="formData.title"></el-input>
                 </el-form-item>
-                <el-form-item label="作者">
+                <el-form-item label="作者" label-width="120">
                     <el-input v-model="formData.author"></el-input>
                 </el-form-item>
-                <el-form-item label="内容">
+                <el-form-item label="内容" label-width="120">
                     <el-input type="textarea" v-model="formData.content"></el-input>
                 </el-form-item>
             </el-form>
-
-            <el-button @click="dialogVisible = false">取消</el-button>
-            <el-button type="primary" @click="handleSave">保存</el-button>
-
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="handleDialogClose()">取 消</el-button>
+                <el-button type="primary" @click="handleSave()">确 定</el-button>
+            </div>
         </el-dialog>
-
+        <!-- 新增 -->
+        <el-dialog title="新增公告">
+            <div v-show="dialogTableVisible">
+                <el-table :data="form">
+                    <el-table-column property="author" label="author" width="150"></el-table-column>
+                    <el-table-column property="title" label="title" width="200"></el-table-column>
+                    <el-table-column property="content" label="content"></el-table-column>
+                </el-table>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
@@ -72,15 +83,54 @@ import { AdminCommonService } from '../services/AdminService.ts'
 import { Failed, ChatDotSquare } from '@element-plus/icons-vue'
 
 let dialogVisible = ref(false);
+let dialogTableVisible = ref(false)
 let currentPage = ref(1);
 let pagerCountValue = ref(8);
 let pageSize = ref(8)
 let total = ref(0)
-const add = async () => {
-    const res: any = await AdminCommonService.addNews(form);
-    fetchData()
-}
 let modal = ref(true)
+let selectedRows:any = ref([]); // 用于存储选中的行
+const add = async () => {
+    console.log("进入add");
+    dialogTableVisible.value = true
+    console.log(dialogTableVisible.value);
+    if (form.title && form.author && form.content) {
+        const res: any = await AdminCommonService.addNews(form);
+        console.log(res);
+
+        await fetchData()
+    } else {
+        console.log("数据不存在");
+        
+    }
+}
+// const selectable = () => {
+//     return true
+// }
+const addBatch = (row) => {
+    if (selectedRows.value.includes(row)) {
+        selectedRows.value = selectedRows.value.filter(item => item !== row);
+    } else {
+        selectedRows.value.push(row);
+    }
+}
+// 批量删除
+const handleBatchDelete = async () => {
+    try {
+        if (selectedRows.value.length > 0) {
+            const idsToDelete = selectedRows.value.map((row) => row.id);
+            await AdminCommonService.deleteNewsBatch(idsToDelete);
+            fetchData();
+            selectedRows.value = [];
+        }
+        else {
+            alert('请先选择要删除的项');
+        }
+    } catch (error) {
+        console.error('Error batch deleting news:', error);
+    }
+};
+
 const formatDate = (dateStr) => {
     const date = new Date(dateStr);
     const year = date.getFullYear();
@@ -90,8 +140,9 @@ const formatDate = (dateStr) => {
 }
 const formatter = (row, column) => {
     const maxLength = 10; // 设置截断长度
-    if (row.content.length > maxLength) {
-        return `${row.content.slice(0, maxLength)}...`;
+    const content = row.content || '';  // 默认空字符串
+    if (content.length > maxLength) {
+        return `${content.slice(0, maxLength)}...`;
     }
     return row.content
 }
@@ -109,16 +160,18 @@ const formData = reactive({
     author: ''
 });
 const form = reactive({
-    updateTime: '',
+   
     title: '',
     content: '',
     author: ''
 });
 const fetchData = async () => {
     try {
+        tableData.length = 0;  // 清空 tableData
         const res:any = await UserCommonService.getNews();
-        tableData.length = 0;
-        res.forEach((item:any) => {
+        // tableData.length = 0;
+        res.forEach((item: any) => {
+           item.updateTime = formatDate(item.updateTime)
             tableData.push(item);
         });
         total.value = res.length
@@ -133,6 +186,7 @@ const handlePageChange = (page) => {
     currentPage.value = page;
 };
 const handleEdit = (row) => {
+    console.log('进入handleEdit函数');
     console.log("row:" + row.id);
     formData.id = row.id;
     formData.updateTime = row.updateTime;
@@ -168,7 +222,7 @@ const handleSave = async () => {
     } catch (error) {
         console.error('Error saving news:', error);
     }
-    fetchData()
+    // fetchData()
 };
 
 const handleDialogClose = () => {
@@ -177,6 +231,7 @@ const handleDialogClose = () => {
     formData.title = '';
     formData.content = '';
     formData.author = '';
+    dialogVisible.value=false
 };
 
 fetchData();
@@ -206,15 +261,16 @@ fetchData();
     transition: background - color 0.3s ease;
 }
 
-.custom-pagination.el -pagination__button:hover,
-.custom-pagination.el- pagination__pager:hover {
+.custom-pagination.el-pagination__button:hover,
+.custom-pagination.el-pagination__pager:hover {
     background-color: #ddd;
 }
 .dialog{
     position: fixed;
+    top: 50%;
     left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 1000;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    /* display: block; */
 }
 </style>

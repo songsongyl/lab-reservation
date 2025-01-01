@@ -19,10 +19,18 @@ export class AdminCommonService {
     return id;// 返回删除的id，以便在调用处确认
   }
  
+  static deleteNewsBatch = async (ids: string[]) => {
+  //   for (const id of ids) {
+  //   await useDelete(`admin/news/${id}`);
+    // }
+    const deletePromises = ids.map(id => useDelete(`admin/news/${id}`));
+  await Promise.all(deletePromises);
+  }
   static updateNews = async (obj:object) => {
     await usePatch('admin/news',  obj )
   }
  static addNews = async (obj: unknown) => {
     await usePost('admin/news',  obj)
   }
+
 }
