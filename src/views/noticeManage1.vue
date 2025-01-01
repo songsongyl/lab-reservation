@@ -63,13 +63,15 @@
             </div>
         </el-dialog>
         <!-- 新增 -->
-        <el-dialog title="新增公告">
-            <div v-show="dialogTableVisible">
-                <el-table :data="form">
-                    <el-table-column property="author" label="author" width="150"></el-table-column>
-                    <el-table-column property="title" label="title" width="200"></el-table-column>
-                    <el-table-column property="content" label="content"></el-table-column>
-                </el-table>
+        <el-dialog title="新增公告" :visible.sync="dialogTableVisible">
+            <el-table :data="form">
+                <el-table-column property="author" label="author" width="150"></el-table-column>
+                <el-table-column property="title" label="title" width="200"></el-table-column>
+                <el-table-column property="content" label="content"></el-table-column>
+            </el-table>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="handleDialogCloseTable">取 消</el-button>
+                <el-button type="primary" @click="handleSaveTable">确 定</el-button>
             </div>
         </el-dialog>
     </div>
@@ -88,7 +90,7 @@ let currentPage = ref(1);
 let pagerCountValue = ref(8);
 let pageSize = ref(8)
 let total = ref(0)
-let modal = ref(true)
+// let modal = ref(true)
 let selectedRows:any = ref([]); // 用于存储选中的行
 const add = async () => {
     console.log("进入add");
@@ -97,10 +99,9 @@ const add = async () => {
     if (form.title && form.author && form.content) {
         const res: any = await AdminCommonService.addNews(form);
         console.log(res);
-
         await fetchData()
     } else {
-        console.log("数据不存在");
+        console.log("数据不完整");
         
     }
 }
@@ -113,15 +114,24 @@ const addBatch = (row) => {
     } else {
         selectedRows.value.push(row);
     }
+    console.log(selectedRows.value);
+    
 }
 // 批量删除
 const handleBatchDelete = async () => {
+    console.log("进入批量删除");
+    console.log(selectedRows.value);
     try {
         if (selectedRows.value.length > 0) {
-            const idsToDelete = selectedRows.value.map((row) => row.id);
-            await AdminCommonService.deleteNewsBatch(idsToDelete);
-            fetchData();
-            selectedRows.value = [];
+            const idsToDelete = selectedRows.value.map((row) => row.id).filter((id) => id);
+            if (idsToDelete.length > 0) {
+                await AdminCommonService.deleteNewsBatch(idsToDelete);
+                fetchData();
+                selectedRows.value = [];
+            } else {
+                alert('所选项目中没有有效的id');
+            }
+           
         }
         else {
             alert('请先选择要删除的项');
@@ -171,7 +181,11 @@ const fetchData = async () => {
         const res:any = await UserCommonService.getNews();
         // tableData.length = 0;
         res.forEach((item: any) => {
-           item.updateTime = formatDate(item.updateTime)
+            if (!item.id) {
+                console.error('数据缺少id属性:', item);
+                return;
+            }
+            item.updateTime = formatDate(item.updateTime)
             tableData.push(item);
         });
         total.value = res.length
@@ -225,6 +239,26 @@ const handleSave = async () => {
     // fetchData()
 };
 
+const handleDialogCloseTable = () => {
+    form.title = '';
+    form.content = '';
+    form.author = '';
+    dialogTableVisible.value = false;
+};
+const handleSaveTable = async () => {
+    try {
+        if (form.title && form.author && form.content) {
+            const res: any = await AdminCommonService.addNews(form);
+            console.log(res);
+            await fetchData();
+            dialogTableVisible.value = false;
+        } else {
+            console.log("数据不完整");
+        }
+    } catch (error) {
+        console.error('Error adding news:', error);
+    }
+};
 const handleDialogClose = () => {
     formData.id = '';
     formData.updateTime = '';
@@ -233,7 +267,6 @@ const handleDialogClose = () => {
     formData.author = '';
     dialogVisible.value=false
 };
-
 fetchData();
 </script>
 
@@ -271,6 +304,10 @@ fetchData();
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 1000;
+    background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     /* display: block; */
 }
 </style>
