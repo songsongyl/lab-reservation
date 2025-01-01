@@ -4,7 +4,11 @@
             type="primary">新增</el-button>
         <el-table v-show="tableData.length>0" :data="currentPageData"
             :default-sort="{ prop: 'updateTime', order: 'descending' }" style="width: 100%;height: 100%;">
-            <el-table-column prop="updateTime" label="UpdateTime" sortable width="250" />
+            <el-table-column prop="updateTime" label="UpdateTime" sortable width="250">
+                <template slot-scope="scope">
+                    {{ formatDate(scope.row.updateTime) }}
+                </template>
+            </el-table-column>
             <el-table-column prop="title" label="Title" width="200" />
             <el-table-column prop="author" label="Author" width="180" />
             <el-table-column prop="content" label="Content" width="200" :formatter="formatter"
@@ -35,7 +39,8 @@
         <el-pagination :page-size="pageSize" background :pager-count="pagerCountValue" layout="prev, pager, next"
             :total="total" @current-change="handlePageChange" />
         <!-- 编辑/新增模态框 -->
-        <el-dialog class="dialog" title="编辑公告" v-show="dialogVisible" :visible.sync="dialogVisible" width="400" @close="handleDialogClose">
+        <el-dialog class="dialog" title="编辑公告" v-show="dialogVisible" :visible.sync="dialogVisible" width="400"
+            @close="handleDialogClose">
             <el-form :model="formData" label-width="80px">
                 <el-form-item label="更新时间">
                     <el-input v-model="formData.updateTime" disabled></el-input>
@@ -55,7 +60,7 @@
             <el-button type="primary" @click="handleSave">保存</el-button>
 
         </el-dialog>
-   
+
     </div>
 </template>
 
@@ -76,6 +81,13 @@ const add = async () => {
     fetchData()
 }
 let modal = ref(true)
+const formatDate = (dateStr) => {
+    const date = new Date(dateStr);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
 const formatter = (row, column) => {
     const maxLength = 10; // 设置截断长度
     if (row.content.length > maxLength) {
