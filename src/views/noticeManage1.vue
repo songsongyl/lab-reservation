@@ -1,14 +1,15 @@
 <template>
     <div>
         <div style="text-align: center;display: flex;">
-            <el-button @click=" add()" type="primary">新增</el-button>
+            <el-button @click=" add" type="primary">新增</el-button>
             <!-- 批量删除按钮 -->
             <el-button @click="handleBatchDelete" type="danger" :disabled="selectedRows.length === 0"
                 style="margin-left: 50px;">批量删除</el-button>
         </div>
         <el-table v-show="tableData.length>0" :data="currentPageData"
-            :default-sort="{ prop: 'updateTime', order: 'descending' }" style="width: 100%;height: 100%;">
-            <el-table-column label="box" type="selection" width="60" >
+            :default-sort="{ prop: 'updateTime', order: 'descending' }" style="width: 100%;height: 100%;"
+            @selection-change="handleSelectionChange">
+            <el-table-column label="box" type="selection" width="60">
             </el-table-column>
             <el-table-column prop="updateTime" label="UpdateTime" sortable width="250">
             </el-table-column>
@@ -16,14 +17,7 @@
             <el-table-column prop="author" label="Author" width="180" />
             <el-table-column prop="content" label="Content" width="200" :formatter="formatter"
                 :show-overflow-tooltip="true" />
-            <!-- <template #aa="{ row }">
-                <el-collapse accordion>
-                    <el-collapse-item
-                        :title="row.content.length > 5 ? `${row.content.slice(0, 5)}...` : row.content">
-                        {{ row.content }}
-                    </el-collapse-item>
-                </el-collapse>
-            </template> -->
+
             <el-table-column label="操作" width="180">
                 <template #default="{ row }">
                     <el-button @click="handleEdit(row)">
@@ -42,11 +36,9 @@
         <el-pagination :page-size="pageSize" background :pager-count="pagerCountValue" layout="prev, pager, next"
             :total="total" @current-change="handlePageChange" />
         <!-- 编辑模态框 -->
-        <el-dialog class="dialog" title="编辑公告" :visible.sync="dialogVisible">
+        <el-dialog title="编辑公告" v-model="dialogVisible">
             <el-form :model="formData" label-width="80px">
-                <el-form-item label="更新时间" label-width="120">
-                    <el-input v-model="formData.updateTime"></el-input>
-                </el-form-item>
+               
                 <el-form-item label="标题" label-width="120">
                     <el-input v-model="formData.title"></el-input>
                 </el-form-item>
@@ -58,17 +50,25 @@
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button @click="handleDialogClose()">取 消</el-button>
-                <el-button type="primary" @click="handleSave()">确 定</el-button>
+                <el-button @click="handleDialogClose">取 消</el-button>
+                <el-button type="primary" @click="handleSave">确 定</el-button>
             </div>
         </el-dialog>
         <!-- 新增 -->
-        <el-dialog title="新增公告" :visible.sync="dialogTableVisible">
-            <el-table :data="form">
-                <el-table-column property="author" label="author" width="150"></el-table-column>
-                <el-table-column property="title" label="title" width="200"></el-table-column>
-                <el-table-column property="content" label="content"></el-table-column>
-            </el-table>
+        <el-dialog title="新增公告" v-model="dialogFormVisible">
+            <el-form :model="form" label-width="100px">
+                <el-form-item label="author" label-width="120">
+                    <el-input v-model="form.author" placeholder="请输入作者"></el-input>
+                </el-form-item>
+                <el-form-item label="title" label-width="120">
+                    <el-input v-model="form.title" placeholder="请输入标题"></el-input>
+                </el-form-item>
+            
+                <el-form-item label="content" label-width="120">
+                    <el-input type="text" v-model="form.content" placeholder="请输入内容"></el-input>
+                </el-form-item>
+               
+            </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click="handleDialogCloseTable">取 消</el-button>
                 <el-button type="primary" @click="handleSaveTable">确 定</el-button>
@@ -83,9 +83,10 @@ import { reactive,ref,computed } from 'vue';
 import { UserCommonService } from '../services/UserService.ts'
 import { AdminCommonService } from '../services/AdminService.ts'
 import { Failed, ChatDotSquare } from '@element-plus/icons-vue'
+import { ElMessage } from 'element-plus'
 
 let dialogVisible = ref(false);
-let dialogTableVisible = ref(false)
+let dialogFormVisible = ref(false)
 let currentPage = ref(1);
 let pagerCountValue = ref(8);
 let pageSize = ref(8)
@@ -94,20 +95,11 @@ let total = ref(0)
 let selectedRows:any = ref([]); // 用于存储选中的行
 const add = async () => {
     console.log("进入add");
-    dialogTableVisible.value = true
-    console.log(dialogTableVisible.value);
-    if (form.title && form.author && form.content) {
-        const res: any = await AdminCommonService.addNews(form);
-        console.log(res);
-        await fetchData()
-    } else {
-        console.log("数据不完整");
-        
-    }
+    dialogFormVisible.value = true
+    console.log(dialogFormVisible.value);
+  
 }
-// const selectable = () => {
-//     return true
-// }
+
 const addBatch = (row) => {
     if (selectedRows.value.includes(row)) {
         selectedRows.value = selectedRows.value.filter(item => item !== row);
@@ -121,13 +113,17 @@ const addBatch = (row) => {
 const handleBatchDelete = async () => {
     console.log("进入批量删除");
     console.log(selectedRows.value);
+    let rows = selectedRows.value;
     try {
-        if (selectedRows.value.length > 0) {
-            const idsToDelete = selectedRows.value.map((row) => row.id).filter((id) => id);
+        if (rows.length > 0) {
+            const idsToDelete = rows.map((row:any) => row.id).filter((id:any) => id);
             if (idsToDelete.length > 0) {
-                await AdminCommonService.deleteNewsBatch(idsToDelete);
+                
+                    await AdminCommonService.deleteNewsBatch(idsToDelete);
+                
                 fetchData();
                 selectedRows.value = [];
+                ElMessage.success("批量删除成功!!");
             } else {
                 alert('所选项目中没有有效的id');
             }
@@ -169,8 +165,8 @@ const formData = reactive({
     content: '',
     author: ''
 });
-const form = reactive({
-   
+let form = reactive({
+    id:'',
     title: '',
     content: '',
     author: ''
@@ -225,11 +221,20 @@ const handleDelete = async (row) => {
         console.error('Error deleting news:', error);
     }
 };
-
+const handleSelectionChange = (val) => {
+    selectedRows.value = val;  // val 是选中的行数据
+    console.log('选中的行:', selectedRows.value);
+};
 const handleSave = async () => {
     try {
         if (formData.id) {
-            await AdminCommonService.updateNews(formData);
+            form.id = formData.id
+            form.content = formData.content
+            form.author = formData.author
+       form.title = formData.title
+            await AdminCommonService.updateNews(form);
+            console.log("更新成功");
+            
         } 
         dialogVisible.value = false;
         fetchData();
@@ -243,18 +248,19 @@ const handleDialogCloseTable = () => {
     form.title = '';
     form.content = '';
     form.author = '';
-    dialogTableVisible.value = false;
+    dialogFormVisible.value = false;
 };
 const handleSaveTable = async () => {
     try {
-        if (form.title && form.author && form.content) {
-            const res: any = await AdminCommonService.addNews(form);
-            console.log(res);
-            await fetchData();
-            dialogTableVisible.value = false;
-        } else {
-            console.log("数据不完整");
-        }
+            if (form.title && form.author && form.content) {
+                const res: any = await AdminCommonService.addNews(form);
+                console.log(res);
+                ElMessage.success("添加成功!!!!");
+                await fetchData();
+                dialogFormVisible.value = false;
+            } 
+           
+    
     } catch (error) {
         console.error('Error adding news:', error);
     }
@@ -298,16 +304,5 @@ fetchData();
 .custom-pagination.el-pagination__pager:hover {
     background-color: #ddd;
 }
-.dialog{
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 1000;
-    background-color: white;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    /* display: block; */
-}
+
 </style>

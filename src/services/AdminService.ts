@@ -15,7 +15,7 @@ export class AdminCommonService {
     }
  
     static deleteNews = async (id: string) => {
-   await useDelete(`admin/news/${id}`)
+   await useDelete(`labadmin/news/${id}`)
     return id;// 返回删除的id，以便在调用处确认
   }
  
@@ -23,14 +23,17 @@ export class AdminCommonService {
   //   for (const id of ids) {
   //   await useDelete(`admin/news/${id}`);
     // }
-    const deletePromises = ids.map(id => useDelete(`admin/news/${id}`));
+    const deletePromises = ids.map(id => useDelete(`labadmin/news/${id}`));
   await Promise.all(deletePromises);
   }
-  static updateNews = async (obj:object) => {
-    await usePatch('admin/news',  obj )
+  static updateNews = async (obj: object) => {
+    console.log("22");
+    const res = await usePatch('labadmin/news', obj)
+    console.log("111"+res);
+    
   }
  static addNews = async (obj: unknown) => {
-    await usePost('admin/news',  obj)
+    await usePost('labadmin/news',  obj)
   }
 
 }
