@@ -8,7 +8,7 @@
         </div>
         <el-table v-show="tableData.length>0" :data="currentPageData"
             :default-sort="{ prop: 'updateTime', order: 'descending' }" style="width: 100%;height: 100%;">
-            <el-table-column label="box" type="selection" width="60" @click="addBatch(row)">
+            <el-table-column label="box" type="selection" width="60" >
             </el-table-column>
             <el-table-column prop="updateTime" label="UpdateTime" sortable width="250">
             </el-table-column>
