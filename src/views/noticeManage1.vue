@@ -56,16 +56,16 @@
         </el-dialog>
         <!-- 新增 -->
         <el-dialog title="新增公告" v-model="dialogFormVisible">
-            <el-form :model="form" label-width="100px">
+            <el-form :model="newForm" label-width="100px">
                 <el-form-item label="author" label-width="120">
-                    <el-input v-model="form.author" placeholder="请输入作者"></el-input>
+                    <el-input v-model="newForm.author" placeholder="请输入作者"></el-input>
                 </el-form-item>
                 <el-form-item label="title" label-width="120">
-                    <el-input v-model="form.title" placeholder="请输入标题"></el-input>
+                    <el-input v-model="newForm.title" placeholder="请输入标题"></el-input>
                 </el-form-item>
             
                 <el-form-item label="content" label-width="120">
-                    <el-input type="text" v-model="form.content" placeholder="请输入内容"></el-input>
+                    <el-input type="text" v-model="newForm.content" placeholder="请输入内容"></el-input>
                 </el-form-item>
                
             </el-form>
@@ -81,6 +81,8 @@
 // import  { TableColumnCtx } from 'element-plus'
 import { reactive,ref,computed } from 'vue';
 import { UserCommonService } from '../services/UserService.ts'
+import { CommonService } from '../services'
+import { ADMIN,USER } from '../services/Const.ts'
 import { AdminCommonService } from '../services/AdminService.ts'
 import { Failed, ChatDotSquare } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
@@ -95,25 +97,31 @@ let total = ref(0)
 let selectedRows:any = ref([]); // 用于存储选中的行
 const add = async () => {
     console.log("进入add");
+    if (CommonService.getRole == USER.toString) {
+        ElMessage.error("无权限!!");
+    }
     dialogFormVisible.value = true
     console.log(dialogFormVisible.value);
-  
 }
 
-const addBatch = (row) => {
-    if (selectedRows.value.includes(row)) {
-        selectedRows.value = selectedRows.value.filter(item => item !== row);
-    } else {
-        selectedRows.value.push(row);
-    }
-    console.log(selectedRows.value);
-    
-}
+// const addBatch = (row) => {
+//     if (selectedRows.value.includes(row)) {
+//         selectedRows.value = selectedRows.value.filter(item => item !== row);
+//     } else {
+//         selectedRows.value.push(row);
+//     }
+//     console.log(selectedRows.value);
+
+// }
+
 // 批量删除
 const handleBatchDelete = async () => {
     console.log("进入批量删除");
     console.log(selectedRows.value);
     let rows = selectedRows.value;
+    if (CommonService.getRole == USER.toString) {
+        ElMessage.error("无权限!!");
+    }
     try {
         if (rows.length > 0) {
             const idsToDelete = rows.map((row:any) => row.id).filter((id:any) => id);
@@ -171,6 +179,11 @@ let form = reactive({
     content: '',
     author: ''
 });
+let newForm = reactive({
+    title: '',
+    content: '',
+    author: ''
+});
 const fetchData = async () => {
     try {
         tableData.length = 0;  // 清空 tableData
@@ -198,6 +211,9 @@ const handlePageChange = (page) => {
 const handleEdit = (row) => {
     console.log('进入handleEdit函数');
     console.log("row:" + row.id);
+    if (CommonService.getRole == USER.toString) {
+        ElMessage.error("无权限!!");
+    }
     formData.id = row.id;
     formData.updateTime = row.updateTime;
     formData.title = row.title;
@@ -212,12 +228,17 @@ const handleDelete = async (row) => {
     try {
         console.log(row.id);       
         const deleteId = await AdminCommonService.deleteNews(row.id);
-        console.log(deleteId);   
+        console.log(deleteId);  
+        ElMessage.success("删除成功!!!!"); 
         if (deleteId) {
             console.log("删除id存在",deleteId);           
             fetchData();
-       }
+        }
+        if (CommonService.getRole == USER.toString) {
+            ElMessage.error("无权限!!");
+        }
     } catch (error) {
+        
         console.error('Error deleting news:', error);
     }
 };
@@ -227,33 +248,36 @@ const handleSelectionChange = (val) => {
 };
 const handleSave = async () => {
     try {
+        
         if (formData.id) {
             form.id = formData.id
             form.content = formData.content
             form.author = formData.author
-       form.title = formData.title
+            form.title = formData.title
             await AdminCommonService.updateNews(form);
-            console.log("更新成功");
-            
+            ElMessage.success("更新成功!!!!");    
         } 
         dialogVisible.value = false;
         fetchData();
     } catch (error) {
+        if (CommonService.getRole == USER.toString) {
+            ElMessage.error("无权限!!");
+        }
         console.error('Error saving news:', error);
     }
     // fetchData()
 };
 
 const handleDialogCloseTable = () => {
-    form.title = '';
-    form.content = '';
-    form.author = '';
+    newForm.title = '';
+    newForm.content = '';
+    newForm.author = '';
     dialogFormVisible.value = false;
 };
 const handleSaveTable = async () => {
     try {
-            if (form.title && form.author && form.content) {
-                const res: any = await AdminCommonService.addNews(form);
+        if (newForm.title && newForm.author && newForm.content) {
+            const res: any = await AdminCommonService.addNews(newForm);
                 console.log(res);
                 ElMessage.success("添加成功!!!!");
                 await fetchData();

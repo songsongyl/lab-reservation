@@ -279,7 +279,6 @@ function getData() {
                 if (!academyBarChart) {
                     academyBarChart = echarts.init(document.getElementById("bar-chart-academy"));
                 }
-
                 barChart.setOption(barChartOptions.value, false);
                 pieChart.setOption(pieChartOptions.value, false);
                 academyBarChart.setOption(academyBarChartOptions.value, false);

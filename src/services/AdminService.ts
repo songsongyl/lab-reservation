@@ -32,7 +32,8 @@ export class AdminCommonService {
     console.log("111"+res);
     
   }
- static addNews = async (obj: unknown) => {
+  static addNews = async (obj: unknown) => {
+   console.log("-------");
     await usePost('labadmin/news',  obj)
   }
 
